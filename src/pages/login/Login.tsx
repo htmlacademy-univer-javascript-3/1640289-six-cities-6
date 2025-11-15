@@ -1,7 +1,6 @@
 import React from 'react';
 
-
-const Login: React.FC = () => (
+export const Login: React.FC = () => (
   <div className="page page--gray page--login">
     <header className="header">
       <div className="container">
@@ -44,5 +43,3 @@ const Login: React.FC = () => (
     </main>
   </div>
 );
-
-export default Login;

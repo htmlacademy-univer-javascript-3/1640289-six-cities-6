@@ -3,36 +3,40 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import PrivateRoute from './components/PrivateRoute.tsx';
 
-import Main from './pages/Main.tsx';
-import Favorites from './pages/Favorites.tsx';
-import Login from './pages/Login.tsx';
-import Offer from './pages/Offer.tsx';
-import NotFoundPage from './pages/NotFoundPage.tsx';
+import { Main } from './pages/main';
+import { Favorites } from './pages/favorites';
+import { Login } from './pages/login';
+import { Offer } from './pages/offer';
+import { NotFoundPage } from './pages/not-found-page';
+
+import { IDetailedOffer } from './shared/types/offer.ts';
+import { RoutePath } from './shared/constants/router.ts';
 
 interface AppProps {
-  placesCount: number;
+  offerCount: number;
+  offers: IDetailedOffer[];
 }
 
-const App: React.FC<AppProps> = ({ placesCount }) => {
+const App: React.FC<AppProps> = ({ offerCount, offers }) => {
   const isAuthorized = false;
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Main placesCount={placesCount} />} />
+        <Route path={RoutePath.Main} element={<Main offerCount={offerCount} offers={offers} />} />
 
-        <Route path="/login" element={<Login />} />
+        <Route path={RoutePath.Login} element={<Login />} />
 
         <Route
-          path="/favorites"
+          path={RoutePath.Favorites}
           element={
             <PrivateRoute isAuthorized={isAuthorized}>
-              <Favorites />
+              <Favorites offers={offers} />
             </PrivateRoute>
           }
         />
 
-        <Route path="/offer/:id" element={<Offer />} />
+        <Route path={RoutePath.Offer} element={<Offer offers={offers} />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
