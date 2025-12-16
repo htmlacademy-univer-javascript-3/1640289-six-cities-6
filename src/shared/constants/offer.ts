@@ -1,5 +1,3 @@
-export const TOTAL_NUMBER_OF_OFFERS = 322;
-
 export const DEFAULT_OFFERS_LIST_LENGTH = 4;
 export const NEAR_OFFERS_LIST_LENGTH = 3;
 

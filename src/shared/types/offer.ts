@@ -1,3 +1,5 @@
+import { Coordinate } from './global.ts';
+
 export enum OfferPlaceType {
   Apartment = 'Apartment',
   Flat = 'Flat',
@@ -12,6 +14,7 @@ export enum OfferHostStatus {
 export interface ISimpleOfferInfo {
   title: string;
   rating: number;
+  coordinates: Coordinate;
   price: number;
   placeType: OfferPlaceType;
   image: string;
