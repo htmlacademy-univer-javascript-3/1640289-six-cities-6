@@ -4,7 +4,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IDetailedOffer, OfferCardType } from '../../shared/types/offer.ts';
 
 import { RoutePath } from '../../shared/constants/router.ts';
-import { NEAR_OFFERS_LIST_LENGTH } from '../../shared/constants/offer.ts';
 
 import { OfferHost } from './components/OfferHost.tsx';
 import { OfferGallery } from './components/OfferGallery.tsx';
@@ -12,6 +11,9 @@ import { OfferInfo } from './components/OfferInfo.tsx';
 import { OfferReviewForm } from './components/OfferReviewForm.tsx';
 import { OffersList } from './components/OffersList.tsx';
 import { OfferReviewsList } from './components/OfferReviewsList.tsx';
+import Map from '../../components/Map.tsx';
+import { getCoordinatesOffers } from '../../shared/utils/offer.ts';
+import { Amsterdam } from '../../mocks/city.ts';
 
 interface OfferProps {
   offers: IDetailedOffer[];
@@ -19,15 +21,18 @@ interface OfferProps {
 
 export const Offer: React.FC<OfferProps> = ({ offers }) => {
   const [offerData, setOfferData] = useState<IDetailedOffer | undefined | null>(null);
+  const [neighbourhoodOffersData, setNeighbourhoodOffersData] = useState<IDetailedOffer[]>([]);
 
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const newOfferData = offers.find((offer) => offer.id === id);
+    if (id) {
+      const newOfferData = offers.find((offer) => offer.id === id);
+      const newNeighbourhoodOffersData = offers.filter((offer) => offer.id !== id);
 
-    if (newOfferData) {
       setOfferData(newOfferData);
+      setNeighbourhoodOffersData(newNeighbourhoodOffersData);
     } else {
       navigate(RoutePath.NotFound);
     }
@@ -88,14 +93,14 @@ export const Offer: React.FC<OfferProps> = ({ offers }) => {
                 </div>
               </div>
 
-              <section className="offer__map map"></section>
+              <Map city={Amsterdam} points={getCoordinatesOffers(offers)} additionalClass={'offer__map'} />
             </section>
 
             <div className="container">
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
 
-                <OffersList offerCardType={OfferCardType.Offer} offersData={offers} numberOfOffers={NEAR_OFFERS_LIST_LENGTH} />
+                <OffersList offerCardType={OfferCardType.Offer} offersData={neighbourhoodOffersData} numberOfOffers={neighbourhoodOffersData.length} />
               </section>
             </div>
           </main>

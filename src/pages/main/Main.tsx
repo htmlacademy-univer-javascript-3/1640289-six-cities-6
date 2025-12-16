@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {IDetailedOffer, OfferCardType} from '../../shared/types/offer.ts';
+import { IDetailedOffer, OfferCardType } from '../../shared/types/offer.ts';
 import { OffersList } from '../offer/components/OffersList.tsx';
 import Map from '../../components/Map.tsx';
 import { getCoordinatesOffers } from '../../shared/utils/offer.ts';
+import { Amsterdam } from '../../mocks/city.ts';
 
 interface MainPageProps {
   offers: IDetailedOffer[];
@@ -11,7 +12,7 @@ interface MainPageProps {
 }
 
 export const Main: React.FC<MainPageProps> = ({ offerCount, offers }) => {
-  const [city] = useState({title: 'Amsterdam', lat: 52.3909553943508, lng: 4.85309666406198, zoom: 1});
+  const [city] = useState(Amsterdam);
 
   return (
     <div className="page page--gray page--main">
@@ -119,7 +120,7 @@ export const Main: React.FC<MainPageProps> = ({ offerCount, offers }) => {
 
             </section>
             <div className="cities__right-section">
-              <Map city={city} points={getCoordinatesOffers(offers)} />
+              <Map city={city} points={getCoordinatesOffers(offers)} additionalClass={'cities__map'} />
             </div>
           </div>
         </div>
