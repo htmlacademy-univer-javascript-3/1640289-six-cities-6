@@ -5,11 +5,13 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../hooks/use-map.tsx';
 import { defaultCustomIcon } from '../shared/constants/asset.ts';
 import { City, Points } from '../shared/types/map.ts';
+import classNames from 'classnames';
 
-type MapProps = {
+interface MapProps {
   city: City;
   points: Points;
-};
+  additionalClass: string;
+}
 
 function Map(props: MapProps): JSX.Element {
   const {city, points} = props;
@@ -38,7 +40,7 @@ function Map(props: MapProps): JSX.Element {
     }
   }, [map, points]);
 
-  return <section className="cities__map map" ref={mapRef} />;
+  return <section className= {classNames('map', props.additionalClass)} ref={mapRef} />;
 }
 
 export default Map;
