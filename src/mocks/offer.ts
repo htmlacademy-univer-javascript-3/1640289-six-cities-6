@@ -6,6 +6,7 @@ export const offerMocks: IDetailedOffer[] = [
     info: {
       title: 'Beautiful & luxurious studio at great location',
       rating: 4.8,
+      coordinates: { lat: 52.3909553943508, lon: 4.85309666406198 },
       placeType: OfferPlaceType.Apartment,
       numberOfRooms: 3,
       numberOfGuests: 4,
@@ -39,6 +40,7 @@ export const offerMocks: IDetailedOffer[] = [
     info: {
       title: 'Modern apartment in city center',
       rating: 4.5,
+      coordinates: { lat: 52.3609553943508, lon: 4.85309666406198 },
       placeType: OfferPlaceType.Flat,
       numberOfRooms: 2,
       numberOfGuests: 3,
@@ -79,6 +81,7 @@ export const offerMocks: IDetailedOffer[] = [
     info: {
       title: 'Cozy house with garden',
       rating: 4.9,
+      coordinates: { lat: 52.3909553943508, lon: 4.929309666406198 },
       placeType: OfferPlaceType.House,
       numberOfRooms: 4,
       numberOfGuests: 6,
@@ -126,6 +129,7 @@ export const offerMocks: IDetailedOffer[] = [
     info: {
       title: 'Studio apartment near metro',
       rating: 4.2,
+      coordinates: { lat: 52.3809553943508, lon: 4.939309666406198 },
       placeType: OfferPlaceType.Flat,
       numberOfRooms: 1,
       numberOfGuests: 2,
