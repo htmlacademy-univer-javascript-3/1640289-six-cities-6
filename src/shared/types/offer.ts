@@ -1,17 +1,8 @@
 import { Coordinate } from './global.ts';
+import { OfferHostStatus, OfferPlaceType } from '../constants/offer.ts';
+import { City } from '../../mocks/city.ts';
 
-export enum OfferPlaceType {
-  Apartment = 'Apartment',
-  Flat = 'Flat',
-  House = 'House'
-}
-
-export enum OfferHostStatus {
-  Pro = 'Pro',
-  Beginner = 'Beginner'
-}
-
-export interface ISimpleOfferInfo {
+export interface MainOfferInfo {
   title: string;
   rating: number;
   coordinates: Coordinate;
@@ -21,7 +12,7 @@ export interface ISimpleOfferInfo {
   isPremium?: boolean;
 }
 
-export interface IDetailedOfferInfo extends ISimpleOfferInfo {
+export interface AdditionalOfferInfo extends MainOfferInfo {
   numberOfRooms: number;
   numberOfGuests: number;
   features: string[];
@@ -29,20 +20,20 @@ export interface IDetailedOfferInfo extends ISimpleOfferInfo {
 
 export interface IDetailedOffer {
   id: string;
-  info: IDetailedOfferInfo;
-  host: IOfferHost;
-  reviews: IOfferReview[];
+  info: AdditionalOfferInfo;
+  host: OfferHostInfo;
+  reviews: OfferFeedback[];
   images: string[];
 }
 
-export interface IOfferHost {
+export interface OfferHostInfo {
   name: string;
   avatar: string;
   status: OfferHostStatus;
   description: string[];
 }
 
-export interface IOfferReview {
+export interface OfferFeedback {
   name: string;
   avatar: string;
   rating: number;
@@ -50,8 +41,9 @@ export interface IOfferReview {
   dateTime: string;
 }
 
-export enum OfferCardType {
-  Main = 'main',
-  Offer = 'offer',
-  Favorites = 'favorites'
+export interface OfferCity {
+  id: number;
+  title: City;
+  lat: number;
+  lng: number;
 }
