@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { IDetailedOffer, OfferCardType } from '../../shared/types/offer.ts';
+import { IDetailedOffer } from '../../shared/types/offer.ts';
 
 import { RoutePath } from '../../shared/constants/router.ts';
 
-import { OfferHost } from './components/OfferHost.tsx';
-import { OfferGallery } from './components/OfferGallery.tsx';
-import { OfferInfo } from './components/OfferInfo.tsx';
-import { OfferReviewForm } from './components/OfferReviewForm.tsx';
-import { OffersList } from './components/OffersList.tsx';
-import { OfferReviewsList } from './components/OfferReviewsList.tsx';
-import Map from '../../components/Map.tsx';
+import { OfferHost } from './components/offer-host.tsx';
+import { OfferGallery } from './components/offer-gallery.tsx';
+import { OfferInfo } from './components/offer-info.tsx';
+import { OfferReviewForm } from './components/offer-review-form.tsx';
+import { OffersList } from './components/offers-list.tsx';
+import { OfferReviewList } from './components/offer-review-list.tsx';
+import Map from '../../components/map.tsx';
 import { getCoordinatesOffers } from '../../shared/utils/offer.ts';
-import { Amsterdam } from '../../mocks/city.ts';
+import { OfferCardType } from '../../shared/constants/offer.ts';
+import { useAppSelector } from '../../hooks/use-store.ts';
 
-interface OfferProps {
-  offers: IDetailedOffer[];
-}
+export const Offer = () => {
+  const city = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offers);
 
-export const Offer: React.FC<OfferProps> = ({ offers }) => {
   const [offerData, setOfferData] = useState<IDetailedOffer | undefined | null>(null);
   const [neighbourhoodOffersData, setNeighbourhoodOffersData] = useState<IDetailedOffer[]>([]);
 
@@ -87,13 +87,13 @@ export const Offer: React.FC<OfferProps> = ({ offers }) => {
                   <section className="offer__reviews reviews">
                     <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{offerData.reviews.length}</span></h2>
 
-                    <OfferReviewsList reviews={offerData.reviews} />
+                    <OfferReviewList reviews={offerData.reviews} />
                     <OfferReviewForm />
                   </section>
                 </div>
               </div>
 
-              <Map city={Amsterdam} points={getCoordinatesOffers(offers)} additionalClass={'offer__map'} />
+              <Map city={city} points={getCoordinatesOffers(offers)} additionalClass={'offer__map'} />
             </section>
 
             <div className="container">

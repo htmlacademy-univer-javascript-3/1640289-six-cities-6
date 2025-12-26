@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { IOfferReview } from '../../../shared/types/offer.ts';
+import { OfferFeedback } from '../../../shared/types/offer.ts';
 import { getRatingPercent } from '../../../shared/utils/offer.ts';
 import { getFormattedDate } from '../../../shared/utils/date.ts';
 
 interface OfferReviewProps {
-  reviewData: IOfferReview;
+  reviewData: OfferFeedback;
 }
 
 export const OfferReview: React.FC<OfferReviewProps> = ({ reviewData }) => {

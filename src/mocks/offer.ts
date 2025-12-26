@@ -1,4 +1,5 @@
-import { OfferPlaceType, OfferHostStatus, IDetailedOffer } from '../shared/types/offer.ts';
+import { IDetailedOffer } from '../shared/types/offer.ts';
+import { OfferHostStatus, OfferPlaceType } from '../shared/constants/offer.ts';
 
 export const offerMocks: IDetailedOffer[] = [
   {

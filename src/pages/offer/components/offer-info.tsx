@@ -1,11 +1,11 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IDetailedOfferInfo } from '../../../shared/types/offer.ts';
+import { AdditionalOfferInfo } from '../../../shared/types/offer.ts';
 import { getRatingPercent } from '../../../shared/utils/offer.ts';
 
 interface OfferInfoProps {
-  offerData: IDetailedOfferInfo;
+  offerData: AdditionalOfferInfo;
 }
 
 export const OfferInfo: React.FC<OfferInfoProps> = ({ offerData }) => {

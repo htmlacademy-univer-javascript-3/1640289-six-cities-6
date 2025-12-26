@@ -1,1 +1,1 @@
-export * from './Offer.tsx';
+export * from './offer.tsx';
