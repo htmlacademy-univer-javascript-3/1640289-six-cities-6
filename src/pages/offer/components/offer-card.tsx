@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { ISimpleOfferInfo, OfferCardType } from '../../../shared/types/offer.ts';
-import { OFFER_CARD_CLASSNAMES } from '../../../shared/constants/offer.ts';
+import { MainOfferInfo } from '../../../shared/types/offer.ts';
+import { OFFER_CARD_CLASSNAMES, OfferCardType } from '../../../shared/constants/offer.ts';
 import { getOfferRouteWithId, getRatingPercent } from '../../../shared/utils/offer.ts';
 
 export interface OfferCardProps {
   id: string;
-  offerData: ISimpleOfferInfo;
+  offerData: MainOfferInfo;
   offerCardType: OfferCardType;
   handleActiveCardIdChange: (newActiveCardId: string | undefined) => void;
 }

@@ -1,18 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 
-import { offerMocks } from './mocks/offer.ts';
-
-import App from './App.tsx';
+import App from './app/app.tsx';
+import { store } from './store';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-const inputData = {
-  offerCount: 6,
-};
-
 root.render(
-  <React.StrictMode>
-    <App offerCount={inputData.offerCount} offers={offerMocks} />
-  </React.StrictMode>
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
 );

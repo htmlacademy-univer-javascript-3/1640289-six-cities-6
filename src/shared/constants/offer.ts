@@ -18,3 +18,20 @@ export const OFFER_CARD_CLASSNAMES = {
     image: 'favorites__image-wrapper place-card__image-wrapper'
   }
 };
+
+export enum OfferPlaceType {
+  Apartment = 'Apartment',
+  Flat = 'Flat',
+  House = 'House'
+}
+
+export enum OfferHostStatus {
+  Pro = 'Pro',
+  Beginner = 'Beginner'
+}
+
+export enum OfferCardType {
+  Main = 'main',
+  Offer = 'offer',
+  Favorites = 'favorites'
+}

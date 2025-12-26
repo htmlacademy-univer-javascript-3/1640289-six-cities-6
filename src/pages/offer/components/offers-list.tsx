@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { IDetailedOffer, OfferCardType } from '../../../shared/types/offer.ts';
-import { DEFAULT_OFFERS_LIST_LENGTH, OFFER_CARD_CLASSNAMES } from '../../../shared/constants/offer.ts';
-import { OfferCard } from './OfferCard.tsx';
+import { IDetailedOffer } from '../../../shared/types/offer.ts';
+import {DEFAULT_OFFERS_LIST_LENGTH, OFFER_CARD_CLASSNAMES, OfferCardType} from '../../../shared/constants/offer.ts';
+import { OfferCard } from './offer-card.tsx';
 
 export interface OffersListProps {
   offersData: IDetailedOffer[];
