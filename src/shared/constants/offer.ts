@@ -35,3 +35,10 @@ export enum OfferCardType {
   Offer = 'offer',
   Favorites = 'favorites'
 }
+
+export enum OffersSortType {
+  Popular = 'Popular',
+  PriceLowToHigh = 'Price: low to high',
+  PriceHightToLow = 'Price: high to low',
+  TopRated = 'Top rated first',
+}

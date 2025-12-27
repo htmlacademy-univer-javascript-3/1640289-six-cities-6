@@ -18,7 +18,7 @@ export interface AdditionalOfferInfo extends MainOfferInfo {
   features: string[];
 }
 
-export interface IDetailedOffer {
+export interface DetailedOffer {
   id: string;
   info: AdditionalOfferInfo;
   host: OfferHostInfo;

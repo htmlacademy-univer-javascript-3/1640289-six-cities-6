@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { IDetailedOffer } from '../../shared/types/offer.ts';
+import { DetailedOffer } from '../../shared/types/offer.ts';
 
 import { RoutePath } from '../../shared/constants/router.ts';
 
@@ -9,7 +9,7 @@ import { OfferHost } from './components/offer-host.tsx';
 import { OfferGallery } from './components/offer-gallery.tsx';
 import { OfferInfo } from './components/offer-info.tsx';
 import { OfferReviewForm } from './components/offer-review-form.tsx';
-import { OffersList } from './components/offers-list.tsx';
+import { OfferList } from './components/offer-list.tsx';
 import { OfferReviewList } from './components/offer-review-list.tsx';
 import Map from '../../components/map.tsx';
 import { getCoordinatesOffers } from '../../shared/utils/offer.ts';
@@ -19,9 +19,10 @@ import { useAppSelector } from '../../hooks/use-store.ts';
 export const Offer = () => {
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
+  const currentOfferId = useAppSelector((state) => state.currentOfferId);
 
-  const [offerData, setOfferData] = useState<IDetailedOffer | undefined | null>(null);
-  const [neighbourhoodOffersData, setNeighbourhoodOffersData] = useState<IDetailedOffer[]>([]);
+  const [offerData, setOfferData] = useState<DetailedOffer | undefined | null>(null);
+  const [neighbourhoodOffersData, setNeighbourhoodOffersData] = useState<DetailedOffer[]>([]);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -93,14 +94,14 @@ export const Offer = () => {
                 </div>
               </div>
 
-              <Map city={city} points={getCoordinatesOffers(offers)} additionalClass={'offer__map'} />
+              <Map city={city} points={getCoordinatesOffers(offers, currentOfferId)} additionalClass={'offer__map'} />
             </section>
 
             <div className="container">
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
 
-                <OffersList offerCardType={OfferCardType.Offer} offersData={neighbourhoodOffersData} numberOfOffers={neighbourhoodOffersData.length} />
+                <OfferList offerCardType={OfferCardType.Offer} numberOfOffers={neighbourhoodOffersData.length} />
               </section>
             </div>
           </main>
