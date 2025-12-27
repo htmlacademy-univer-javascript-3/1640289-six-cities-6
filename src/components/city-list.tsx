@@ -1,19 +1,21 @@
 import React, { useCallback, memo } from 'react';
 import classNames from 'classnames';
 
-import { City, cityMocks } from '../mocks/city.ts';
 import { useAppDispatch, useAppSelector } from '../hooks/use-store.ts';
 import { setCity } from '../store/action.ts';
+import {getCitiesData} from '../shared/utils/offer.ts';
+import {OfferCity} from '../shared/types/offer.ts';
 
 export const CitiesListComponent: React.FC = () => {
   const currentCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offers);
 
-  const cities = Object.values(cityMocks);
+  const cities = getCitiesData(offers);
 
   const dispatch = useAppDispatch();
 
   const handleCityChange = useCallback(
-    (city: City) => {
+    (city: OfferCity) => {
       dispatch(setCity(city));
     },
     [dispatch]
@@ -25,17 +27,17 @@ export const CitiesListComponent: React.FC = () => {
         <ul className="locations__list tabs__list">
           {cities.map((city) => (
             <li
-              key={city.id}
+              key={city.name}
               className="locations__item"
-              onClick={() => handleCityChange(city.title)}
+              onClick={() => handleCityChange(city)}
             >
               <a
                 className={classNames('locations__item-link tabs__item', {
-                  ['tabs__item--active']: city.title === currentCity
+                  ['tabs__item--active']: city.name === currentCity.name
                 })}
                 href="#"
               >
-                <span>{city.title}</span>
+                <span>{city.name}</span>
               </a>
             </li>
           ))}

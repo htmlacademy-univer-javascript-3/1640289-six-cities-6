@@ -13,7 +13,7 @@ export interface OfferCardProps {
 }
 
 export const OfferCard: React.FC<OfferCardProps> = ({ id, offerData, offerCardType, handleActiveCardIdChange }) => {
-  const { title, rating, price, placeType, isPremium, image } = offerData;
+  const { title, rating, price, type, isPremium, previewImage } = offerData;
 
   return (
     <article
@@ -29,7 +29,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({ id, offerData, offerCardTy
 
       <div className={OFFER_CARD_CLASSNAMES[offerCardType].image}>
         <Link to={getOfferRouteWithId(id)}>
-          <img className="place-card__image" src={image} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
 
@@ -61,7 +61,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({ id, offerData, offerCardTy
           </Link>
         </h2>
 
-        <p className="place-card__type">{placeType}</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );

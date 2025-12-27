@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { DetailedOffer } from '../../shared/types/offer.ts';
+import { MainOfferInfo} from '../../shared/types/offer.ts';
 
 import { RoutePath } from '../../shared/constants/router.ts';
 
@@ -17,12 +17,11 @@ import { OfferCardType } from '../../shared/constants/offer.ts';
 import { useAppSelector } from '../../hooks/use-store.ts';
 
 export const Offer = () => {
-  const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
   const currentOfferId = useAppSelector((state) => state.currentOfferId);
 
-  const [offerData, setOfferData] = useState<DetailedOffer | undefined | null>(null);
-  const [neighbourhoodOffersData, setNeighbourhoodOffersData] = useState<DetailedOffer[]>([]);
+  const [offerData, setOfferData] = useState<MainOfferInfo | undefined | null>(null);
+  const [neighbourhoodOffersData, setNeighbourhoodOffersData] = useState<MainOfferInfo[]>([]);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -78,23 +77,23 @@ export const Offer = () => {
         offerData ? (
           <main className="page__main page__main--offer">
             <section className="offer">
-              <OfferGallery images={offerData.images} />
+              {/*<OfferGallery images={offerData.images} />*/}
 
               <div className="offer__container container">
                 <div className="offer__wrapper">
-                  <OfferInfo offerData={offerData.info} />
-                  <OfferHost hostData={offerData.host} />
+                  {/*<OfferInfo offerData={offerData.info} />*/}
+                  {/*<OfferHost hostData={offerData.host} />*/}
 
                   <section className="offer__reviews reviews">
-                    <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{offerData.reviews.length}</span></h2>
+                    {/*<h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{offerData.reviews.length}</span></h2>*/}
 
-                    <OfferReviewList reviews={offerData.reviews} />
+                    {/*<OfferReviewList reviews={offerData.reviews} />*/}
                     <OfferReviewForm />
                   </section>
                 </div>
               </div>
 
-              <Map city={city} points={getCoordinatesOffers(offers, currentOfferId)} additionalClass={'offer__map'} />
+              <Map points={getCoordinatesOffers(offers, currentOfferId)} additionalClass={'offer__map'} />
             </section>
 
             <div className="container">

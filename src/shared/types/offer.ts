@@ -1,15 +1,22 @@
-import { Coordinate } from './global.ts';
-import { OfferHostStatus, OfferPlaceType } from '../constants/offer.ts';
-import { City } from '../../mocks/city.ts';
+import { OfferHostStatus } from '../constants/offer.ts';
+
+export type LocationType = {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+}
 
 export interface MainOfferInfo {
+  id: string;
   title: string;
-  rating: number;
-  coordinates: Coordinate;
+  type: string;
   price: number;
-  placeType: OfferPlaceType;
-  image: string;
-  isPremium?: boolean;
+  city: OfferCity;
+  location: LocationType;
+  isFavorite: boolean;
+  isPremium: boolean;
+  rating: number;
+  previewImage: string;
 }
 
 export interface AdditionalOfferInfo extends MainOfferInfo {
@@ -42,8 +49,6 @@ export interface OfferFeedback {
 }
 
 export interface OfferCity {
-  id: number;
-  title: City;
-  lat: number;
-  lng: number;
+  name: string;
+  location: LocationType;
 }

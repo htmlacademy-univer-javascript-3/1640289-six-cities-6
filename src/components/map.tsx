@@ -5,19 +5,17 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../hooks/use-map.tsx';
 import { Points } from '../shared/types/map.ts';
 import classNames from 'classnames';
-import { City } from '../mocks/city.ts';
 
 interface MapProps {
-  city: City;
   points: Points;
   additionalClass: string;
 }
 
 function Map(props: MapProps): JSX.Element {
-  const {city, points} = props;
+  const {points} = props;
 
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef);
 
   useEffect(() => {
     if (map) {
