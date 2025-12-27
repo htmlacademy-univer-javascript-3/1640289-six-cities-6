@@ -3,7 +3,6 @@ import { Marker, layerGroup } from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
 import useMap from '../hooks/use-map.tsx';
-import { defaultCustomIcon } from '../shared/constants/asset.ts';
 import { Points } from '../shared/types/map.ts';
 import classNames from 'classnames';
 import { City } from '../mocks/city.ts';
@@ -31,7 +30,7 @@ function Map(props: MapProps): JSX.Element {
         });
 
         marker
-          .setIcon(defaultCustomIcon)
+          .setIcon(point.icon)
           .addTo(markerLayer);
       });
 

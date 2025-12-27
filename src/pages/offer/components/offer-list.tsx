@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { IDetailedOffer } from '../../../shared/types/offer.ts';
 import {DEFAULT_OFFERS_LIST_LENGTH, OFFER_CARD_CLASSNAMES, OfferCardType} from '../../../shared/constants/offer.ts';
 import { OfferCard } from './offer-card.tsx';
+import { useAppDispatch, useAppSelector } from '../../../hooks/use-store.ts';
+import { setCurrentOfferId } from '../../../store/action.ts';
 
 export interface OffersListProps {
-  offersData: IDetailedOffer[];
   offerCardType: OfferCardType;
   numberOfOffers?: number;
 }
-export const OffersList: React.FC<OffersListProps> = ({
-  offersData,
+export const OfferList: React.FC<OffersListProps> = ({
   offerCardType,
   numberOfOffers = DEFAULT_OFFERS_LIST_LENGTH
 }) => {
-  const [, setActiveCardId] = useState<string | undefined>();
+  const offersData = useAppSelector((state) => state.offers);
+
+  const dispatch = useAppDispatch();
 
   const handleActiveCardIdChange = (newActiveCardId: string | undefined) => {
-    setActiveCardId(newActiveCardId);
+    dispatch(setCurrentOfferId(newActiveCardId));
   };
 
   return (

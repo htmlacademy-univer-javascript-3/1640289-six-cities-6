@@ -1,3 +1,5 @@
+import { Icon } from 'leaflet';
+
 export type City = {
   title: string;
   lat: number;
@@ -8,6 +10,7 @@ export type City = {
 export type Point = {
   lat: number;
   lon: number;
+  icon: Icon;
 };
 
 export type Points = Point[];
