@@ -19,18 +19,19 @@ export interface MainOfferInfo {
   previewImage: string;
 }
 
-export interface AdditionalOfferInfo extends MainOfferInfo {
-  numberOfRooms: number;
-  numberOfGuests: number;
-  features: string[];
+export interface OfferUser {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
 }
 
-export interface DetailedOffer {
-  id: string;
-  info: AdditionalOfferInfo;
-  host: OfferHostInfo;
-  reviews: OfferFeedback[];
+export type AdditionalOfferInfo = Omit<MainOfferInfo, 'previewImage'> & {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: OfferUser;
   images: string[];
+  maxAdults: number;
 }
 
 export interface OfferHostInfo {
@@ -41,11 +42,11 @@ export interface OfferHostInfo {
 }
 
 export interface OfferFeedback {
-  name: string;
-  avatar: string;
+  id: string;
+  date: string;
+  user: OfferUser;
+  comment: string;
   rating: number;
-  description: string;
-  dateTime: string;
 }
 
 export interface OfferCity {

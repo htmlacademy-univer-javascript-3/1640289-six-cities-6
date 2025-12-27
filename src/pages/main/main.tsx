@@ -34,7 +34,7 @@ export const Main = () => {
 
               <OffersSort />
 
-              <OfferList offerCardType={OfferCardType.Main} />
+              <OfferList offers={currentOffers} offerCardType={OfferCardType.Main} />
 
             </section>
             <div className="cities__right-section">

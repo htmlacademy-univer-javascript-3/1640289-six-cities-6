@@ -9,17 +9,17 @@ interface OfferReviewProps {
 }
 
 export const OfferReview: React.FC<OfferReviewProps> = ({ reviewData }) => {
-  const { name, avatar, rating, description, dateTime } = reviewData;
+  const { date, user, comment, rating } = reviewData;
 
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
-          <img className="reviews__avatar user__avatar" src={avatar} width="54" height="54" alt="Reviews avatar" />
+          <img className="reviews__avatar user__avatar" src={user.avatarUrl} width="54" height="54" alt="Reviews avatar" />
         </div>
 
         <span className="reviews__user-name">
-          {name}
+          {user.name}
         </span>
       </div>
 
@@ -32,10 +32,10 @@ export const OfferReview: React.FC<OfferReviewProps> = ({ reviewData }) => {
         </div>
 
         <p className="reviews__text">
-          {description}
+          {comment}
         </p>
 
-        <time className="reviews__time" dateTime={dateTime}>{getFormattedDate(dateTime)}</time>
+        <time className="reviews__time" dateTime={date}>{getFormattedDate(date)}</time>
       </div>
     </li>
   );

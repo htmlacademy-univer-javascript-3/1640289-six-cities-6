@@ -1,8 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import {setAuthStatus, setCity, setCurrentOfferId, setIsLoading, setName, setOffers, setOffersSort} from './action';
+import {
+  setAuthStatus,
+  setCity,
+  setCurrentOfferId, setCurrentOfferLoading, setCurrentOfferFeedbacks,
+  setIsLoading,
+  setName,
+  setOffers,
+  setOffersLoading,
+  setOffersSort, setCurrentOfferNearbyOffers, setCurrentOffer
+} from './action';
 import { OffersSortType } from '../shared/constants/offer.ts';
-import { MainOfferInfo, OfferCity} from '../shared/types/offer.ts';
+import {AdditionalOfferInfo, MainOfferInfo, OfferCity, OfferFeedback} from '../shared/types/offer.ts';
 import { getSortedOffers } from '../shared/utils/offer.ts';
 import {AuthStatus} from '../shared/constants/auth.ts';
 
@@ -12,12 +21,23 @@ export interface StateType {
   authorizationStatus: AuthStatus;
   name?: string;
   offers: MainOfferInfo[];
+  offersLoading: boolean;
   offersSort: OffersSortType;
+  currentOffer: AdditionalOfferInfo | null;
+  currentOfferLoading: boolean;
+  currentOfferFeedbacks: OfferFeedback[];
+  currentOfferNearby: MainOfferInfo[];
   currentOfferId?: string;
 }
 
 const stateType: StateType = {
   city: { name: '', location: { latitude: 0, longitude: 0, zoom: 0 } },
+  offersLoading: true,
+
+  currentOffer: null,
+  currentOfferLoading: false,
+  currentOfferFeedbacks: [],
+  currentOfferNearby: [],
   isLoading: true,
   authorizationStatus: AuthStatus.Unknown,
   name: '',
@@ -37,6 +57,9 @@ export const reducer = createReducer(stateType, (builder) => {
     .addCase(setCurrentOfferId, (state, { payload }) => {
       state.currentOfferId = payload;
     })
+    .addCase(setCurrentOffer, (state, { payload }) => {
+      state.currentOffer = payload;
+    })
     .addCase(setOffersSort, (state, { payload }) => {
       state.offersSort = payload;
 
@@ -46,6 +69,18 @@ export const reducer = createReducer(stateType, (builder) => {
     })
     .addCase(setIsLoading, (state, { payload }) => {
       state.isLoading = payload;
+    })
+    .addCase(setCurrentOfferFeedbacks, (state, { payload }) => {
+      state.currentOfferFeedbacks = payload;
+    })
+    .addCase(setCurrentOfferNearbyOffers, (state, { payload }) => {
+      state.currentOfferNearby = payload;
+    })
+    .addCase(setOffersLoading, (state, { payload }) => {
+      state.offersLoading = payload;
+    })
+    .addCase(setCurrentOfferLoading, (state, { payload }) => {
+      state.currentOfferLoading = payload;
     })
     .addCase(setName, (state, { payload }) => {
       state.name = payload;

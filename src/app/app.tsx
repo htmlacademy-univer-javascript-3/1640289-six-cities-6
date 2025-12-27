@@ -17,7 +17,7 @@ import {authCheck} from '../store/actions/auth.ts';
 const App = () => {
   const dispatch = useAppDispatch();
 
-  const isLoading = useAppSelector((state) => state.isLoading);
+  const isLoading = useAppSelector((state) => state.offersLoading);
 
   if (isLoading) {
     dispatch(fetchOffers());

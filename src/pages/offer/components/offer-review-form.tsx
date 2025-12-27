@@ -1,61 +1,92 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {useAppDispatch} from '../../../hooks/use-store.ts';
+import {postReview} from '../../../store/actions/offer-action.ts';
+import {COMMENT_OPTIONS, RATING_VALUES} from '../../../shared/constants/offer.ts';
+import {validateValues} from '../../../shared/utils/offer.ts';
 
-export const OfferReviewForm: React.FC = () => {
-  const [textareaValue, setTextAreaValue] = useState<string>('');
+interface OfferReviewFormProps{
+  offerId?: string;
+}
 
-  const handleTextareaValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextAreaValue(e.target.value);
+export const OfferReviewForm: React.FC<OfferReviewFormProps> = ({ offerId }) => {
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+
+  const [canFormPost, setCanFormPost] = useState(false);
+  const [isFormPosting, setIsFormPosting] = useState(false);
+
+  useEffect(() => {
+    const areValuesValid = validateValues(rating, comment);
+    setCanFormPost(areValuesValid);
+  }, [rating, comment]);
+
+  const handleCommentValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
+  };
+
+  const handleRatingValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+
+    setRating(value);
+  };
+
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (offerId) {
+      setIsFormPosting(true);
+
+      dispatch(postReview({
+        offerId,
+        comment,
+        rating,
+      }));
+
+      setRating(0);
+      setComment('');
+      setIsFormPosting(false);
+    }
   };
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" onSubmit={handleSubmit} aria-disabled={isFormPosting}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
 
       <div className="reviews__rating-form form__rating">
-        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" />
+        {RATING_VALUES.map(({ value, title }) => (
+          <React.Fragment key={title}>
+            <input
+              className="form__rating-input visually-hidden"
+              id={`${value}-stars`}
+              name="rating"
+              value={value}
+              onChange={handleRatingValueChange}
+              type="radio"
+              checked={rating === Number(value)}
+              disabled={isFormPosting}
+            />
 
-        <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="4" id="4-stars" type="radio" />
-        <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio" />
-        <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="2" id="2-stars" type="radio" />
-        <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="1" id="1-star" type="radio" />
-        <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
+            <label htmlFor={`${value}-stars`} className="reviews__rating-label form__rating-label" title={title}>
+              <svg className="form__star-image" width="37" height="33">
+                <use xlinkHref="#icon-star" />
+              </svg>
+            </label>
+          </React.Fragment>
+        ))}
       </div>
 
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
         name="review"
+        value={comment}
+        onChange={handleCommentValueChange}
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onChange={handleTextareaValueChange}
-        value={textareaValue}
+        minLength={COMMENT_OPTIONS.minLength}
+        maxLength={COMMENT_OPTIONS.maxLength}
+        disabled={isFormPosting}
       />
 
       <div className="reviews__button-wrapper">
@@ -63,7 +94,13 @@ export const OfferReviewForm: React.FC = () => {
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
 
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={!canFormPost || isFormPosting}
+        >
+          Submit
+        </button>
       </div>
     </form>
   );

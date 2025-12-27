@@ -5,3 +5,9 @@ export interface UserInfo {
   email: string;
   token: string;
 }
+
+export interface FeedbackInfo {
+  offerId: string;
+  comment: string;
+  rating: number;
+}

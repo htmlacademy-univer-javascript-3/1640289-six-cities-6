@@ -1,9 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-
-import { MainOfferInfo} from '../../shared/types/offer.ts';
-
-import { RoutePath } from '../../shared/constants/router.ts';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { OfferHost } from './components/offer-host.tsx';
 import { OfferGallery } from './components/offer-gallery.tsx';
@@ -13,103 +9,85 @@ import { OfferList } from './components/offer-list.tsx';
 import { OfferReviewList } from './components/offer-review-list.tsx';
 import Map from '../../components/map.tsx';
 import { getCoordinatesOffers } from '../../shared/utils/offer.ts';
-import { OfferCardType } from '../../shared/constants/offer.ts';
-import { useAppSelector } from '../../hooks/use-store.ts';
+import {NEAR_OFFERS_LIST_LENGTH, OfferCardType} from '../../shared/constants/offer.ts';
+import {useAppDispatch, useAppSelector} from '../../hooks/use-store.ts';
+import {Header} from '../../components/header.tsx';
+import {fetchCurrentOffer} from '../../store/actions/offer-action.ts';
+import Spinner from '../../components/spinner/spinner.tsx';
+import {AuthStatus} from '../../shared/constants/auth.ts';
 
 export const Offer = () => {
-  const offers = useAppSelector((state) => state.offers);
-  const currentOfferId = useAppSelector((state) => state.currentOfferId);
+  const dispatch = useAppDispatch();
 
-  const [offerData, setOfferData] = useState<MainOfferInfo | undefined | null>(null);
-  const [neighbourhoodOffersData, setNeighbourhoodOffersData] = useState<MainOfferInfo[]>([]);
+  const navigate = useNavigate();
 
   const { id } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
-      const newOfferData = offers.find((offer) => offer.id === id);
-      const newNeighbourhoodOffersData = offers.filter((offer) => offer.id !== id);
-
-      setOfferData(newOfferData);
-      setNeighbourhoodOffersData(newNeighbourhoodOffersData);
-    } else {
-      navigate(RoutePath.NotFound);
+      dispatch(fetchCurrentOffer({ offerId: id, navigate }));
     }
-  }, [id, offers, navigate]);
+  }, [dispatch, id, navigate]);
 
   useEffect(() => {
     window.scrollTo(0,0);
   }, [id]);
 
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
+
+  const isCurrentOfferLoading = useAppSelector((state) => state.currentOfferLoading);
+
+  const currentOfferData = useAppSelector((state) => state.currentOffer);
+  const currentOfferFeedbacks = useAppSelector((state) => state.currentOfferFeedbacks);
+  const currentOfferNearby = useAppSelector((state) => state.currentOfferNearby);
+
+  const nearbyOffersData = currentOfferNearby.slice(0, NEAR_OFFERS_LIST_LENGTH);
+
+  console.log(currentOfferData);
+  console.log(isCurrentOfferLoading);
+
+  if (!currentOfferData || isCurrentOfferLoading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Link to={RoutePath.Main}>
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </Link>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header />
+      <main className="page__main page__main--offer">
+        <section className="offer">
+          <OfferGallery images={currentOfferData.images} />
 
-      {
-        offerData ? (
-          <main className="page__main page__main--offer">
-            <section className="offer">
-              {/*<OfferGallery images={offerData.images} />*/}
+          <div className="offer__container container">
+            <div className="offer__wrapper">
+              <OfferInfo offerData={currentOfferData} />
+              <OfferHost hostData={currentOfferData.host} />
 
-              <div className="offer__container container">
-                <div className="offer__wrapper">
-                  {/*<OfferInfo offerData={offerData.info} />*/}
-                  {/*<OfferHost hostData={offerData.host} />*/}
+              <section className="offer__reviews reviews">
+                <h2 className="reviews__title">
+                  Reviews &middot; <span className="reviews__amount">{currentOfferFeedbacks.length}</span>
+                </h2>
 
-                  <section className="offer__reviews reviews">
-                    {/*<h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{offerData.reviews.length}</span></h2>*/}
+                <OfferReviewList reviews={currentOfferFeedbacks} />
 
-                    {/*<OfferReviewList reviews={offerData.reviews} />*/}
-                    <OfferReviewForm />
-                  </section>
-                </div>
-              </div>
-
-              <Map points={getCoordinatesOffers(offers, currentOfferId)} additionalClass={'offer__map'} />
-            </section>
-
-            <div className="container">
-              <section className="near-places places">
-                <h2 className="near-places__title">Other places in the neighbourhood</h2>
-
-                <OfferList offerCardType={OfferCardType.Offer} numberOfOffers={neighbourhoodOffersData.length} />
+                {authStatus === AuthStatus.Auth && <OfferReviewForm offerId={id} />}
               </section>
             </div>
-          </main>
-        ) : (
-          <div style={{ height: '100%', width: '100%', display: 'flex', justifyItems:'center', alignItems: 'center' }}>
-            Nothing here yet...
           </div>
-        )
-      }
+
+          <Map points={getCoordinatesOffers(nearbyOffersData, id)} additionalClass={'offer__map'} />
+        </section>
+
+        <div className="container">
+          <section className="near-places places">
+            <h2 className="near-places__title">Other places in the neighbourhood</h2>
+
+            <OfferList
+              offers={nearbyOffersData}
+              offerCardType={OfferCardType.Offer}
+            />
+          </section>
+        </div>
+      </main>
     </div>
   );
 };

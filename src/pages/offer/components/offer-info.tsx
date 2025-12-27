@@ -9,7 +9,16 @@ interface OfferInfoProps {
 }
 
 export const OfferInfo: React.FC<OfferInfoProps> = ({ offerData }) => {
-  const { features, numberOfGuests, numberOfRooms, placeType, price, rating, title, isPremium } = offerData;
+  const {
+    type,
+    price,
+    rating,
+    title,
+    isPremium,
+    bedrooms,
+    maxAdults,
+    goods
+  } = offerData;
 
   return (
     <>
@@ -42,13 +51,13 @@ export const OfferInfo: React.FC<OfferInfoProps> = ({ offerData }) => {
 
       <ul className="offer__features">
         <li className="offer__feature offer__feature--entire">
-          {placeType}
+          {type}
         </li>
         <li className="offer__feature offer__feature--bedrooms">
-          {numberOfRooms} Bedrooms
+          {bedrooms} Bedrooms
         </li>
         <li className="offer__feature offer__feature--adults">
-          Max {numberOfGuests} adults
+          Max {maxAdults} adults
         </li>
       </ul>
 
@@ -62,9 +71,9 @@ export const OfferInfo: React.FC<OfferInfoProps> = ({ offerData }) => {
 
         <ul className="offer__inside-list">
 
-          {features.map((feature) => (
+          {goods.map((good) => (
             <li key={uuidv4()} className="offer__inside-item">
-              {feature}
+              {good}
             </li>
           ))}
         </ul>

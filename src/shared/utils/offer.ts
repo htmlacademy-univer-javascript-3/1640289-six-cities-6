@@ -1,6 +1,6 @@
 import { RoutePath } from '../constants/router.ts';
 import { MainOfferInfo, OfferCity} from '../types/offer.ts';
-import { OffersSortType } from '../constants/offer.ts';
+import {COMMENT_OPTIONS, OffersSortType} from '../constants/offer.ts';
 import { currentCustomIcon, defaultCustomIcon } from '../constants/asset.ts';
 
 export const getRatingPercent = (ratingNumber: number) => {
@@ -47,3 +47,5 @@ export const getCitiesData = (offersData: MainOfferInfo[]) => {
 
   return citiesData;
 };
+
+export const validateValues = (rating: number, comment: string) => rating > 0 && comment.length >= COMMENT_OPTIONS.minLength;
