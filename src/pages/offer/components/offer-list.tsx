@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 
 import {DEFAULT_OFFERS_LIST_LENGTH, OFFER_CARD_CLASSNAMES, OfferCardType} from '../../../shared/constants/offer.ts';
 import { OfferCard } from './offer-card.tsx';
@@ -13,9 +13,13 @@ export const OfferList: React.FC<OffersListProps> = ({
   offerCardType,
   numberOfOffers = DEFAULT_OFFERS_LIST_LENGTH
 }) => {
-  const offersData = useAppSelector((state) => state.offers);
+  const offers = useAppSelector((state) => state.offers);
+  const currentCity = useAppSelector((state) => state.city);
 
   const dispatch = useAppDispatch();
+
+  const currentOffers = useMemo(() => offers.filter((offer) => offer.city.name === currentCity.name), [currentCity.name, offers]);
+
 
   const handleActiveCardIdChange = (newActiveCardId: string | undefined) => {
     dispatch(setCurrentOfferId(newActiveCardId));
@@ -23,7 +27,7 @@ export const OfferList: React.FC<OffersListProps> = ({
 
   return (
     <div className={OFFER_CARD_CLASSNAMES[offerCardType].container}>
-      {offersData
+      {currentOffers
         .slice(0, numberOfOffers)
         .map((offerData) => (
           <OfferCard

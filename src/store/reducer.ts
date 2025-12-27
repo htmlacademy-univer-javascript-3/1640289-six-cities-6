@@ -1,14 +1,16 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import {setCity, setCurrentOfferId, setIsLoading, setOffers, setOffersSort} from './action';
-import { offerMocks } from '../mocks/offer.ts';
+import {setAuthStatus, setCity, setCurrentOfferId, setIsLoading, setName, setOffers, setOffersSort} from './action';
 import { OffersSortType } from '../shared/constants/offer.ts';
 import { MainOfferInfo, OfferCity} from '../shared/types/offer.ts';
 import { getSortedOffers } from '../shared/utils/offer.ts';
+import {AuthStatus} from '../shared/constants/auth.ts';
 
 export interface StateType {
   city: OfferCity;
   isLoading: boolean;
+  authorizationStatus: AuthStatus;
+  name?: string;
   offers: MainOfferInfo[];
   offersSort: OffersSortType;
   currentOfferId?: string;
@@ -17,6 +19,8 @@ export interface StateType {
 const stateType: StateType = {
   city: { name: '', location: { latitude: 0, longitude: 0, zoom: 0 } },
   isLoading: true,
+  authorizationStatus: AuthStatus.Unknown,
+  name: '',
   offers: [],
   offersSort: OffersSortType.Popular,
   currentOfferId: undefined
@@ -42,5 +46,11 @@ export const reducer = createReducer(stateType, (builder) => {
     })
     .addCase(setIsLoading, (state, { payload }) => {
       state.isLoading = payload;
+    })
+    .addCase(setName, (state, { payload }) => {
+      state.name = payload;
+    })
+    .addCase(setAuthStatus, (state, { payload }) => {
+      state.authorizationStatus = payload;
     });
 });

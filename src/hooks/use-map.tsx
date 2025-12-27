@@ -15,25 +15,28 @@ function useMap(
       const instance = new Map(mapRef.current, {
         center: {
           lat: city.location.latitude,
-          lng: city.location.longitude
+          lng: city.location.longitude,
         },
-        zoom: 10
+        zoom: 12
       });
 
       const layer = new TileLayer(
         'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
         {
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
         }
       );
 
       instance.addLayer(layer);
-
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, city, city.location.latitude, city.location.longitude]);
+
+    if (map) {
+      map.setView([city.location.latitude, city.location.longitude], map.getZoom());
+    }
+  }, [mapRef, city, map]);
 
   return map;
 }

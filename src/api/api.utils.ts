@@ -9,10 +9,12 @@ export const saveToken = (token: string) => {
   localStorage.setItem(AUTH_TOKEN_KEY, token);
 };
 
-export const dropToken = () => {
+export const removeToken = () => {
   localStorage.removeItem(AUTH_TOKEN_KEY);
 };
 
 export enum ApiEndpoint {
   Offers = 'offers',
+  Login = 'login',
+  Logout = 'logout',
 }

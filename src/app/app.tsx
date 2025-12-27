@@ -12,10 +12,9 @@ import { RoutePath } from '../shared/constants/router.ts';
 import {useAppDispatch, useAppSelector} from '../hooks/use-store.ts';
 import {fetchOffers} from '../store/actions/offer-action.ts';
 import Spinner from '../components/spinner/spinner.tsx';
+import {authCheck} from '../store/actions/auth.ts';
 
 const App = () => {
-  const isAuthorized = false;
-
   const dispatch = useAppDispatch();
 
   const isLoading = useAppSelector((state) => state.isLoading);
@@ -25,6 +24,8 @@ const App = () => {
 
     return <Spinner />;
   }
+
+  dispatch(authCheck());
 
   return (
     <BrowserRouter>
@@ -36,7 +37,7 @@ const App = () => {
         <Route
           path={RoutePath.Favorites}
           element={
-            <PrivateRoute isAuthorized={isAuthorized}>
+            <PrivateRoute>
               <Favorites />
             </PrivateRoute>
           }
