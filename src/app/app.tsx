@@ -9,9 +9,22 @@ import { Offer } from '../pages/offer';
 import { NotFoundPage } from '../pages/not-found-page';
 
 import { RoutePath } from '../shared/constants/router.ts';
+import {useAppDispatch, useAppSelector} from '../hooks/use-store.ts';
+import {fetchOffers} from '../store/actions/offer-action.ts';
+import Spinner from '../components/spinner/spinner.tsx';
 
 const App = () => {
   const isAuthorized = false;
+
+  const dispatch = useAppDispatch();
+
+  const isLoading = useAppSelector((state) => state.isLoading);
+
+  if (isLoading) {
+    dispatch(fetchOffers());
+
+    return <Spinner />;
+  }
 
   return (
     <BrowserRouter>

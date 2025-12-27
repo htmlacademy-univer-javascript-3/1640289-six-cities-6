@@ -29,7 +29,7 @@ export const OfferList: React.FC<OffersListProps> = ({
           <OfferCard
             key={offerData.id}
             id={offerData.id}
-            offerData={offerData.info}
+            offerData={offerData}
             offerCardType={offerCardType}
             handleActiveCardIdChange={handleActiveCardIdChange}
           />

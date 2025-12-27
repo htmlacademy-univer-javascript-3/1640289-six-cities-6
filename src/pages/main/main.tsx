@@ -11,7 +11,8 @@ export const Main = () => {
   const offers = useAppSelector((state) => state.offers);
   const currentOfferId = useAppSelector((state) => state.currentOfferId);
 
-  const offersCount = offers.length;
+  const currentOffers = offers.filter((offer) => offer.city.name === currentCity.name);
+  const offersCount = currentOffers.length;
 
   return (
     <div className="page page--gray page--main">
@@ -56,7 +57,7 @@ export const Main = () => {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
 
-              <b className="places__found">{offersCount} places to stay in {currentCity}</b>
+              <b className="places__found">{offersCount} places to stay in {currentCity.name}</b>
 
               <OffersSort />
 
@@ -64,7 +65,7 @@ export const Main = () => {
 
             </section>
             <div className="cities__right-section">
-              <Map city={currentCity} points={getCoordinatesOffers(offers, currentOfferId)} additionalClass={'cities__map'} />
+              <Map points={getCoordinatesOffers(offers, currentOfferId)} additionalClass={'cities__map'} />
             </div>
           </div>
         </div>
