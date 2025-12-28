@@ -8,6 +8,7 @@ import { OffersSort } from '../offer/components/offer-sort.tsx';
 import { Header } from '../../components/header.tsx';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { MainEmpty } from './components/main-empty.tsx';
 
 export const Main = () => {
   const { currentOfferId } = useSelector((state: RootState) => state.currentOffer);
@@ -16,6 +17,10 @@ export const Main = () => {
 
   const mapPoints = useMemo(() => getCoordinatesOffers(offers, currentOfferId), [offers, currentOfferId]);
   const currentOffers = useMemo(() => offers.filter((offer) => offer.city.name === city.name), [city.name, offers]);
+
+  if (!currentOffers.length){
+    return <MainEmpty />;
+  }
 
   return (
     <div className="page page--gray page--main">

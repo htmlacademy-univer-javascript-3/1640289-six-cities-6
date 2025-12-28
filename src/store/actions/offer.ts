@@ -8,13 +8,14 @@ import { NavigateFunction } from 'react-router-dom';
 import { RoutePath } from '../../shared/constants/router.ts';
 import { FeedbackInfo } from '../../shared/types/user.ts';
 import { setCity } from '../slices/city.ts';
-import {setInitialOffers, setOffers, setOffersLoading} from '../slices/offer.ts';
+import { setInitialOffers, setOffers, setOffersLoading } from '../slices/offer.ts';
 import {
   setCurrentOffer,
   setCurrentOfferFeedbacks,
   setCurrentOfferLoading,
   setCurrentOfferNearbyOffers
 } from '../slices/current-offer.ts';
+import { setFavorites } from '../slices/favorite.ts';
 
 export const fetchOffers = createAsyncThunk<void, undefined, {
   dispatch: AppDispatchType;
@@ -110,5 +111,35 @@ export const postReview = createAsyncThunk<void, FeedbackInfo, {
     await api.post(`${ApiEndpoint.Feedbacks}/${offerId}`, {comment, rating});
 
     dispatch(fetchReviews({offerId}));
+  },
+);
+
+export const fetchFavorites = createAsyncThunk<MainOfferInfo[], undefined, {
+  dispatch: AppDispatchType;
+  state: StateType;
+  extra: AxiosInstance;
+}>(
+  'favorites/fetch',
+  async (_arg, {dispatch, extra: api}) => {
+    const { data } = await api.get<MainOfferInfo[]>(ApiEndpoint.Favorites);
+
+    dispatch(setFavorites(data));
+
+    return data;
+  },
+);
+
+export const setBookmarkOffer = createAsyncThunk<AdditionalOfferInfo, {offer: MainOfferInfo; status: 0 | 1}, {
+  dispatch: AppDispatchType;
+  state: StateType;
+  extra: AxiosInstance;
+}>(
+  'favorites/post',
+  async ({offer, status}, {dispatch, extra: api}) => {
+    const { data } = await api.post<AdditionalOfferInfo>(`${ApiEndpoint.Favorites}/${offer.id}/${status}`);
+
+    dispatch(fetchFavorites());
+
+    return data;
   },
 );

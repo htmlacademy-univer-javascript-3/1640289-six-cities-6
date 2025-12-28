@@ -13,15 +13,8 @@ const favoritesSlice = createSlice({
   name: 'favorites',
   initialState: INITIAL_STATE,
   reducers: {
-    setFavorites(state, action: PayloadAction<MainOfferInfo>) {
-      const { id } = action.payload;
-      const findFavorite = state.offerFavorites.find((item) => item.id === id);
-
-      if (findFavorite) {
-        state.offerFavorites = state.offerFavorites.filter((item) => item.id !== id);
-      } else {
-        state.offerFavorites.push(action.payload);
-      }
+    setFavorites(state, action: PayloadAction<MainOfferInfo[]>) {
+      state.offerFavorites = action.payload;
     },
   },
 });

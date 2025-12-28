@@ -11,7 +11,7 @@ import { NotFoundPage } from '../pages/not-found-page';
 
 import { RoutePath } from '../shared/constants/router.ts';
 import { RootState, useAppDispatch } from '../hooks/use-store.ts';
-import { fetchOffers } from '../store/actions/offer-action.ts';
+import { fetchFavorites, fetchOffers } from '../store/actions/offer.ts';
 import Spinner from '../components/spinner/spinner.tsx';
 import { authCheck } from '../store/actions/auth.ts';
 import { useSelector } from 'react-redux';
@@ -24,6 +24,7 @@ const App = () => {
     if (offersLoading) {
       dispatch(fetchOffers());
     }
+    dispatch(fetchFavorites());
     dispatch(authCheck());
   }, [dispatch, offersLoading]);
 

@@ -14,7 +14,7 @@ import { RootState, useAppDispatch } from '../../hooks/use-store.ts';
 import { Header } from '../../components/header.tsx';
 import Spinner from '../../components/spinner/spinner.tsx';
 import { AuthStatus } from '../../shared/constants/auth.ts';
-import { fetchCurrentOffer } from '../../store/actions/offer-action.ts';
+import { fetchCurrentOffer } from '../../store/actions/offer.ts';
 import { useSelector } from 'react-redux';
 
 export const Offer = () => {

@@ -1,9 +1,15 @@
-import React, { useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import React, {useCallback, useMemo} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { MainOfferInfo } from '../../../shared/types/offer.ts';
 import { OFFER_CARD_CLASSNAMES, OfferCardType } from '../../../shared/constants/offer.ts';
 import { getOfferRouteWithId, getRatingPercent } from '../../../shared/utils/offer.ts';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../../../hooks/use-store.ts';
+import { AuthStatus } from '../../../shared/constants/auth.ts';
+import { RoutePath } from '../../../shared/constants/router.ts';
+import { setBookmarkOffer } from '../../../store/actions/offer.ts';
+import classNames from 'classnames';
 
 interface OfferCardProps {
   id: string;
@@ -13,10 +19,29 @@ interface OfferCardProps {
 }
 
 export const OfferCard: React.FC<OfferCardProps> = ({ id, offerData, offerCardType, handleActiveCardIdChange }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const { title, rating, price, type, isPremium, previewImage } = offerData;
+  const { authorizationStatus } = useSelector((state: RootState) => state.auth);
+  const { offerFavorites } = useSelector((state: RootState) => state.favorites);
+
+  const isFavorite = useMemo(() => offerFavorites.find((item) => item.id === offerData.id)?.isFavorite || false, [offerData.id, offerFavorites]);
 
   const handleMouseOver = useCallback(() => handleActiveCardIdChange(id), [id, handleActiveCardIdChange]);
   const handleMouseLeave = useCallback(() => handleActiveCardIdChange(id), [handleActiveCardIdChange, id]);
+
+  const handleBookmarkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (authorizationStatus !== AuthStatus.Auth) {
+      navigate(RoutePath.Login);
+      return;
+    }
+
+    const status = isFavorite ? 0 : 1;
+    dispatch(setBookmarkOffer({ offer: offerData, status }));
+  };
 
   return (
     <article
@@ -43,7 +68,10 @@ export const OfferCard: React.FC<OfferCardProps> = ({ id, offerData, offerCardTy
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
 
-          <button className="place-card__bookmark-button button" type="button">
+          <button className={classNames('place-card__bookmark-button button', {
+            ['place-card__bookmark-button--active']: isFavorite
+          })} type="button" onClick={handleBookmarkClick}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

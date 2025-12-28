@@ -18,5 +18,6 @@ export enum ApiEndpoint {
   Login = 'login',
   Logout = 'logout',
   Feedbacks = 'comments',
-  Nearby = 'nearby'
+  Nearby = 'nearby',
+  Favorites = 'favorite'
 }

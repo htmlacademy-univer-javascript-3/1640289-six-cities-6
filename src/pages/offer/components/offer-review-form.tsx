@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { useAppDispatch } from '../../../hooks/use-store.ts';
-import { postReview } from '../../../store/actions/offer-action.ts';
+import { postReview } from '../../../store/actions/offer.ts';
 import { COMMENT_OPTIONS, RATING_VALUES } from '../../../shared/constants/offer.ts';
 import { validateValues } from '../../../shared/utils/offer.ts';
 
