@@ -1,16 +1,26 @@
-import React from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../hooks/use-store.ts';
-import {RoutePath} from '../shared/constants/router.ts';
-import {AuthStatus} from '../shared/constants/auth.ts';
-import {authLogout} from '../store/actions/auth.ts';
+import React, { useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { RootState, useAppDispatch } from '../hooks/use-store.ts';
+import { RoutePath } from '../shared/constants/router.ts';
+import { AuthStatus } from '../shared/constants/auth.ts';
+import { authLogout } from '../store/actions/auth.ts';
+import { useSelector } from 'react-redux';
 
 export const Header: React.FC = () => {
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
-  const name = useAppSelector((state) => state.name);
+  const { authorizationStatus, name } = useSelector((state: RootState) => state.auth);
+  const { offerFavorites } = useSelector((state: RootState) => state.favorites);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const handleLogout = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      dispatch(authLogout({ navigate }));
+    },
+    [dispatch, navigate]
+  );
 
   return (
     <header className="header">
@@ -24,27 +34,24 @@ export const Header: React.FC = () => {
 
           <nav className="header__nav">
             <ul className="header__nav-list">
-              {authStatus === AuthStatus.Auth && (
+              {authorizationStatus === AuthStatus.Auth && (
                 <li className="header__nav-item user">
                   <a className="header__nav-link header__nav-link--profile" href="#">
                     <div className="header__avatar-wrapper user__avatar-wrapper" />
-                    <span className="header__user-name user__name">{name}</span>
-                    {/* TODO: Add favorite-count */}
-                    <span className="header__favorite-count">3</span>
+                    <Link to={RoutePath.Favorites}>
+                      <span className="header__user-name user__name">{name}</span>
+                    </Link>
+                    <span className="header__favorite-count">{offerFavorites.length}</span>
                   </a>
                 </li>
               )}
 
-              {authStatus === AuthStatus.Auth ? (
+              {authorizationStatus === AuthStatus.Auth ? (
                 <li className="header__nav-item">
                   <Link
                     to={RoutePath.Main}
                     className="header__nav-link"
-                    onClick={(e) => {
-                      e.preventDefault();
-
-                      dispatch(authLogout({navigate}));
-                    }}
+                    onClick={handleLogout}
                   >
                     <span className="header__signout">Sign out</span>
                   </Link>

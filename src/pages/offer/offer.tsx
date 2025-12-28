@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { OfferHost } from './components/offer-host.tsx';
@@ -9,18 +9,17 @@ import { OfferList } from './components/offer-list.tsx';
 import { OfferReviewList } from './components/offer-review-list.tsx';
 import Map from '../../components/map.tsx';
 import { getCoordinatesOffers } from '../../shared/utils/offer.ts';
-import {NEAR_OFFERS_LIST_LENGTH, OfferCardType} from '../../shared/constants/offer.ts';
-import {useAppDispatch, useAppSelector} from '../../hooks/use-store.ts';
-import {Header} from '../../components/header.tsx';
-import {fetchCurrentOffer} from '../../store/actions/offer-action.ts';
+import { NEAR_OFFERS_LIST_LENGTH, OfferCardType } from '../../shared/constants/offer.ts';
+import { RootState, useAppDispatch } from '../../hooks/use-store.ts';
+import { Header } from '../../components/header.tsx';
 import Spinner from '../../components/spinner/spinner.tsx';
-import {AuthStatus} from '../../shared/constants/auth.ts';
+import { AuthStatus } from '../../shared/constants/auth.ts';
+import { fetchCurrentOffer } from '../../store/actions/offer-action.ts';
+import { useSelector } from 'react-redux';
 
 export const Offer = () => {
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
-
   const { id } = useParams();
 
   useEffect(() => {
@@ -30,23 +29,16 @@ export const Offer = () => {
   }, [dispatch, id, navigate]);
 
   useEffect(() => {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }, [id]);
 
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const { authorizationStatus } = useSelector((state: RootState) => state.auth);
+  const { currentOffer, currentOfferLoading, currentOfferNearby, currentOfferFeedbacks } = useSelector((state: RootState) => state.currentOffer);
 
-  const isCurrentOfferLoading = useAppSelector((state) => state.currentOfferLoading);
 
-  const currentOfferData = useAppSelector((state) => state.currentOffer);
-  const currentOfferFeedbacks = useAppSelector((state) => state.currentOfferFeedbacks);
-  const currentOfferNearby = useAppSelector((state) => state.currentOfferNearby);
+  const nearbyOffersData = useMemo(() => currentOfferNearby.slice(0, NEAR_OFFERS_LIST_LENGTH), [currentOfferNearby]);
 
-  const nearbyOffersData = currentOfferNearby.slice(0, NEAR_OFFERS_LIST_LENGTH);
-
-  console.log(currentOfferData);
-  console.log(isCurrentOfferLoading);
-
-  if (!currentOfferData || isCurrentOfferLoading) {
+  if (!currentOffer || currentOfferLoading) {
     return <Spinner />;
   }
 
@@ -55,12 +47,12 @@ export const Offer = () => {
       <Header />
       <main className="page__main page__main--offer">
         <section className="offer">
-          <OfferGallery images={currentOfferData.images} />
+          <OfferGallery images={currentOffer.images} />
 
           <div className="offer__container container">
             <div className="offer__wrapper">
-              <OfferInfo offerData={currentOfferData} />
-              <OfferHost hostData={currentOfferData.host} />
+              <OfferInfo offerData={currentOffer} />
+              <OfferHost hostData={currentOffer.host} />
 
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">
@@ -69,7 +61,7 @@ export const Offer = () => {
 
                 <OfferReviewList reviews={currentOfferFeedbacks} />
 
-                {authStatus === AuthStatus.Auth && <OfferReviewForm offerId={id} />}
+                {authorizationStatus === AuthStatus.Auth && <OfferReviewForm offerId={id} />}
               </section>
             </div>
           </div>

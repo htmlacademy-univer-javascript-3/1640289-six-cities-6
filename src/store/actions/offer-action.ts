@@ -1,19 +1,20 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { StateType } from '../reducer.ts';
-import {AdditionalOfferInfo, MainOfferInfo, OfferFeedback} from '../../shared/types/offer.ts';
-import { ApiEndpoint } from '../../api/api.utils.ts';
+import { AdditionalOfferInfo, MainOfferInfo, OfferFeedback } from '../../shared/types/offer.ts';
+import { ApiEndpoint } from '../../shared/utils/api.ts';
+
+import { AppDispatchType, StateType } from '../index.ts';
+import { NavigateFunction } from 'react-router-dom';
+import { RoutePath } from '../../shared/constants/router.ts';
+import { FeedbackInfo } from '../../shared/types/user.ts';
+import { setCity } from '../slices/city.ts';
+import {setInitialOffers, setOffers, setOffersLoading} from '../slices/offer.ts';
 import {
-  setCity, setCurrentOffer,
-  setCurrentOfferFeedbacks, setCurrentOfferLoading,
-  setCurrentOfferNearbyOffers,
-  setOffers,
-  setOffersLoading
-} from '../action.ts';
-import { AppDispatchType } from '../index.ts';
-import {NavigateFunction} from 'react-router-dom';
-import {RoutePath} from '../../shared/constants/router.ts';
-import {FeedbackInfo} from '../../shared/types/user.ts';
+  setCurrentOffer,
+  setCurrentOfferFeedbacks,
+  setCurrentOfferLoading,
+  setCurrentOfferNearbyOffers
+} from '../slices/current-offer.ts';
 
 export const fetchOffers = createAsyncThunk<void, undefined, {
   dispatch: AppDispatchType;
@@ -28,57 +29,74 @@ export const fetchOffers = createAsyncThunk<void, undefined, {
 
     dispatch(setCity(city));
     dispatch(setOffers(data));
+    dispatch(setInitialOffers(data));
     dispatch(setOffersLoading(false));
   },
 );
 
 
-export const fetchReviews = createAsyncThunk<void, { offerId: string }, {
+export const fetchReviews = createAsyncThunk<OfferFeedback[], { offerId: string }, {
   dispatch: AppDispatchType;
   state: StateType;
   extra: AxiosInstance;
 }>(
   'feedbacks/set',
-  async ({offerId}, {dispatch, extra: api}) => {
-    const { data } = await api.get<OfferFeedback[]>(`${ApiEndpoint.Feedbacks}/${offerId}`);
+  async ({offerId}, {dispatch, extra: api, rejectWithValue}) => {
+    try {
+      const { data } = await api.get<OfferFeedback[]>(`${ApiEndpoint.Feedbacks}/${offerId}`);
 
-    dispatch(setCurrentOfferFeedbacks(data));
+      dispatch(setCurrentOfferFeedbacks(data));
+
+      return data;
+    } catch {
+      return rejectWithValue(null);
+    }
   },
 );
 
-export const fetchNearby = createAsyncThunk<void, { offerId: string }, {
+export const fetchNearby = createAsyncThunk<MainOfferInfo[], { offerId: string }, {
   dispatch: AppDispatchType;
   state: StateType;
   extra: AxiosInstance;
 }>(
   'nearby/fetch',
-  async ({offerId}, {dispatch, extra: api}) => {
-    const { data } = await api.get<MainOfferInfo[]>(`${ApiEndpoint.Offers}/${offerId}/${ApiEndpoint.Nearby}`);
+  async ({offerId}, {dispatch, extra: api, rejectWithValue}) => {
 
-    dispatch(setCurrentOfferNearbyOffers(data));
+    try {
+      const { data } = await api.get<MainOfferInfo[]>(`${ApiEndpoint.Offers}/${offerId}/${ApiEndpoint.Nearby}`);
+
+      dispatch(setCurrentOfferNearbyOffers(data));
+
+      return data;
+    } catch {
+      return rejectWithValue('Failed to fetch nearby offers');
+    }
   },
 );
 
-export const fetchCurrentOffer = createAsyncThunk<void, { offerId: string; navigate: NavigateFunction }, {
+export const fetchCurrentOffer = createAsyncThunk<AdditionalOfferInfo, { offerId: string; navigate: NavigateFunction }, {
   dispatch: AppDispatchType;
   state: StateType;
   extra: AxiosInstance;
 }>(
   'offer/set',
-  async ({offerId, navigate}, {dispatch, extra: api}) => {
+  async ({offerId, navigate}, {dispatch, extra: api, rejectWithValue}) => {
     dispatch(setCurrentOfferLoading(true));
 
     try {
       const { data } = await api.get<AdditionalOfferInfo>(`${ApiEndpoint.Offers}/${offerId}`);
 
-      dispatch(fetchReviews({offerId}));
-      dispatch(fetchNearby({offerId}));
+      dispatch(fetchReviews({ offerId }));
+      dispatch(fetchNearby({ offerId }));
       dispatch(setCurrentOffer(data));
-    } catch {
-      navigate(RoutePath.BadRoute);
-    }
 
-    dispatch(setCurrentOfferLoading(false));
+      return data;
+    } catch {
+      navigate(RoutePath.NotFound);
+      return rejectWithValue(null);
+    } finally {
+      dispatch(setCurrentOfferLoading(false));
+    }
   },
 );
 

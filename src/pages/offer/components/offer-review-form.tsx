@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import {useAppDispatch} from '../../../hooks/use-store.ts';
-import {postReview} from '../../../store/actions/offer-action.ts';
-import {COMMENT_OPTIONS, RATING_VALUES} from '../../../shared/constants/offer.ts';
-import {validateValues} from '../../../shared/utils/offer.ts';
+import React, {useCallback, useEffect, useState} from 'react';
+import { useAppDispatch } from '../../../hooks/use-store.ts';
+import { postReview } from '../../../store/actions/offer-action.ts';
+import { COMMENT_OPTIONS, RATING_VALUES } from '../../../shared/constants/offer.ts';
+import { validateValues } from '../../../shared/utils/offer.ts';
 
 interface OfferReviewFormProps{
   offerId?: string;
@@ -11,26 +11,23 @@ interface OfferReviewFormProps{
 export const OfferReviewForm: React.FC<OfferReviewFormProps> = ({ offerId }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
-
   const [canFormPost, setCanFormPost] = useState(false);
   const [isFormPosting, setIsFormPosting] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const areValuesValid = validateValues(rating, comment);
     setCanFormPost(areValuesValid);
   }, [rating, comment]);
 
-  const handleCommentValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleCommentValueChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
-  };
+  }, []);
 
-  const handleRatingValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-
-    setRating(value);
-  };
-
-  const dispatch = useAppDispatch();
+  const handleRatingValueChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setRating(Number(e.target.value));
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,7 +88,7 @@ export const OfferReviewForm: React.FC<OfferReviewFormProps> = ({ offerId }) => 
 
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
+          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{COMMENT_OPTIONS.minLength} characters</b>.
         </p>
 
         <button

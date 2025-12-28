@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { reducer } from './reducer.ts';
 import apiClient from '../api/api.ts';
+import rootReducer from './slices/root.ts';
 
 export const store = configureStore({
-  reducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: {
@@ -14,3 +14,4 @@ export const store = configureStore({
 });
 
 export type AppDispatchType = typeof store.dispatch;
+export type StateType = ReturnType<typeof store.getState>;

@@ -1,7 +1,7 @@
 import { RoutePath } from '../constants/router.ts';
 import { MainOfferInfo, OfferCity} from '../types/offer.ts';
 import {COMMENT_OPTIONS, OffersSortType} from '../constants/offer.ts';
-import { currentCustomIcon, defaultCustomIcon } from '../constants/asset.ts';
+import { CURRENT_CUSTOM_ICON, DEFAULT_CUSTOM_ICON } from '../constants/asset.ts';
 
 export const getRatingPercent = (ratingNumber: number) => {
   const ratingPercentValue = ratingNumber / 5 * 100;
@@ -12,7 +12,7 @@ export const getRatingPercent = (ratingNumber: number) => {
 export const getOfferRouteWithId = (id: string) => RoutePath.Offer.replace(':id', id);
 
 export const getCoordinatesOffers = (offers: MainOfferInfo[], currentOfferId?: string) => offers.map((offer) => {
-  const currentOfferPointType = offer.id === currentOfferId ? currentCustomIcon : defaultCustomIcon;
+  const currentOfferPointType = offer.id === currentOfferId ? CURRENT_CUSTOM_ICON : DEFAULT_CUSTOM_ICON;
 
   return { lat: offer.location.latitude, lon: offer.location.longitude, icon: currentOfferPointType };
 });
@@ -45,7 +45,7 @@ export const getCitiesData = (offersData: MainOfferInfo[]) => {
     }
   }
 
-  return citiesData;
+  return citiesData.sort((a, b) => a.name.localeCompare(b.name));
 };
 
 export const validateValues = (rating: number, comment: string) => rating > 0 && comment.length >= COMMENT_OPTIONS.minLength;

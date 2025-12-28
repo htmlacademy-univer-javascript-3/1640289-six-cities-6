@@ -1,22 +1,23 @@
-import React, { useCallback, memo } from 'react';
+import React, { useCallback, memo, useMemo } from 'react';
 import classNames from 'classnames';
 
-import { useAppDispatch, useAppSelector } from '../hooks/use-store.ts';
-import { setCity } from '../store/action.ts';
-import {getCitiesData} from '../shared/utils/offer.ts';
-import {OfferCity} from '../shared/types/offer.ts';
+import { RootState, useAppDispatch } from '../hooks/use-store.ts';
+import { getCitiesData } from '../shared/utils/offer.ts';
+import { OfferCity } from '../shared/types/offer.ts';
+import { setCity } from '../store/slices/city.ts';
+import { useSelector } from 'react-redux';
 
 export const CitiesListComponent: React.FC = () => {
-  const currentCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers);
+  const { city } = useSelector((state: RootState) => state.city);
+  const { offers } = useSelector((state: RootState) => state.offers);
 
-  const cities = getCitiesData(offers);
+  const cities = useMemo(() => getCitiesData(offers), [offers]);
 
   const dispatch = useAppDispatch();
 
   const handleCityChange = useCallback(
-    (city: OfferCity) => {
-      dispatch(setCity(city));
+    (setCurrentCity: OfferCity) => {
+      dispatch(setCity(setCurrentCity));
     },
     [dispatch]
   );
@@ -25,19 +26,19 @@ export const CitiesListComponent: React.FC = () => {
     <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
-          {cities.map((city) => (
+          {cities.map((cityItem) => (
             <li
-              key={city.name}
+              key={cityItem.name}
               className="locations__item"
-              onClick={() => handleCityChange(city)}
+              onClick={() => handleCityChange(cityItem)}
             >
               <a
                 className={classNames('locations__item-link tabs__item', {
-                  ['tabs__item--active']: city.name === currentCity.name
+                  ['tabs__item--active']: cityItem.name === city.name
                 })}
                 href="#"
               >
-                <span>{city.name}</span>
+                <span>{cityItem.name}</span>
               </a>
             </li>
           ))}

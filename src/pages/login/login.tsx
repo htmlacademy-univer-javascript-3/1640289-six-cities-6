@@ -1,10 +1,11 @@
 import React from 'react';
-import { useAppSelector } from '../../hooks/use-store.ts';
-import {LoginForm} from './components/login-form.tsx';
-import {Header} from '../../components/header.tsx';
+import { RootState } from '../../hooks/use-store.ts';
+import { LoginForm } from './components/login-form.tsx';
+import { Header } from '../../components/header.tsx';
+import { useSelector } from 'react-redux';
 
 export const Login: React.FC = () => {
-  const city = useAppSelector((state) => state.city);
+  const { city } = useSelector((state: RootState) => state.city);
 
   return (
     <div className="page page--gray page--login">

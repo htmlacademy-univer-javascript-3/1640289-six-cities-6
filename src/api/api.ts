@@ -1,10 +1,6 @@
 import axios from 'axios';
-import { getToken } from './api.utils.ts';
-
-export const AUTH_TOKEN_KEY = 'six-cities-token';
-
-const API_URL = 'https://14.design.htmlacademy.pro/six-cities';
-const API_TIMEOUT = 5000;
+import { getToken } from '../shared/utils/api.ts';
+import { API_TIMEOUT, API_URL } from '../shared/constants/api.ts';
 
 export const createApiClient = () => {
   const api = axios.create({

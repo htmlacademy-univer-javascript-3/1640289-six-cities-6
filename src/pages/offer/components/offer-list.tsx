@@ -1,24 +1,25 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import { OFFER_CARD_CLASSNAMES, OfferCardType} from '../../../shared/constants/offer.ts';
+import { OFFER_CARD_CLASSNAMES, OfferCardType } from '../../../shared/constants/offer.ts';
 import { OfferCard } from './offer-card.tsx';
 import { useAppDispatch } from '../../../hooks/use-store.ts';
-import { setCurrentOfferId } from '../../../store/action.ts';
-import {MainOfferInfo} from '../../../shared/types/offer.ts';
+import { MainOfferInfo } from '../../../shared/types/offer.ts';
+import { setCurrentOfferId } from '../../../store/slices/current-offer.ts';
 
-export interface OffersListProps {
+interface OffersListProps {
   offers: MainOfferInfo[];
   offerCardType: OfferCardType;
 }
+
 export const OfferList: React.FC<OffersListProps> = ({
   offers,
   offerCardType,
 }) => {
   const dispatch = useAppDispatch();
 
-  const handleActiveCardIdChange = (newActiveCardId?: string) => {
+  const handleActiveCardIdChange = useCallback((newActiveCardId: string) => {
     dispatch(setCurrentOfferId(newActiveCardId));
-  };
+  }, [dispatch]);
 
   return (
     <div className={OFFER_CARD_CLASSNAMES[offerCardType].container}>

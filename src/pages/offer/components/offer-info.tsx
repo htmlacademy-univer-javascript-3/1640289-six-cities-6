@@ -1,5 +1,4 @@
 import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import { AdditionalOfferInfo } from '../../../shared/types/offer.ts';
 import { getRatingPercent } from '../../../shared/utils/offer.ts';
@@ -17,7 +16,7 @@ export const OfferInfo: React.FC<OfferInfoProps> = ({ offerData }) => {
     isPremium,
     bedrooms,
     maxAdults,
-    goods
+    goods,
   } = offerData;
 
   return (
@@ -72,7 +71,7 @@ export const OfferInfo: React.FC<OfferInfoProps> = ({ offerData }) => {
         <ul className="offer__inside-list">
 
           {goods.map((good) => (
-            <li key={uuidv4()} className="offer__inside-item">
+            <li key={good} className="offer__inside-item">
               {good}
             </li>
           ))}

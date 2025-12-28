@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import {useRef, useEffect, useMemo} from 'react';
 import { Marker, layerGroup } from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
@@ -12,31 +12,34 @@ interface MapProps {
 }
 
 function Map(props: MapProps): JSX.Element {
-  const {points} = props;
+  const { points } = props;
 
   const mapRef = useRef(null);
   const map = useMap(mapRef);
+
+  const markers = useMemo(() => points.map((point) => {
+    const marker = new Marker({
+      lat: point.lat,
+      lng: point.lon,
+    });
+
+    marker.setIcon(point.icon);
+    return marker;
+  }), [points]);
 
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
 
-      points.forEach((point) => {
-        const marker = new Marker({
-          lat: point.lat,
-          lng: point.lon
-        });
-
-        marker
-          .setIcon(point.icon)
-          .addTo(markerLayer);
+      markers.forEach((marker) => {
+        marker.addTo(markerLayer);
       });
 
       return () => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points]);
+  }, [map, markers]);
 
   return <section className= {classNames('map', props.additionalClass)} ref={mapRef} />;
 }

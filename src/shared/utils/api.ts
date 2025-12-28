@@ -1,4 +1,4 @@
-import { AUTH_TOKEN_KEY } from './api.ts';
+import { AUTH_TOKEN_KEY } from '../constants/api.ts';
 
 export const getToken = () => {
   const token = localStorage.getItem(AUTH_TOKEN_KEY);

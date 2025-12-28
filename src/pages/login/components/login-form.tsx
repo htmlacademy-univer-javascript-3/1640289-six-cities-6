@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import {useAppDispatch} from '../../../hooks/use-store.ts';
-import {authLogin} from '../../../store/actions/auth.ts';
-import {useNavigate} from 'react-router-dom';
+import { useAppDispatch } from '../../../hooks/use-store.ts';
+import { authLogin } from '../../../store/actions/auth.ts';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +18,6 @@ export const LoginForm: React.FC = () => {
     setPassword(e.target.value);
   };
 
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -27,7 +25,6 @@ export const LoginForm: React.FC = () => {
       dispatch(authLogin({payload: { email, password }, navigate }));
     }
   };
-
 
   return (
     <form className="login__form form" onSubmit={handleSubmit}>

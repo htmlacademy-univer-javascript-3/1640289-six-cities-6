@@ -1,25 +1,28 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { MainOfferInfo } from '../../../shared/types/offer.ts';
 import { OFFER_CARD_CLASSNAMES, OfferCardType } from '../../../shared/constants/offer.ts';
 import { getOfferRouteWithId, getRatingPercent } from '../../../shared/utils/offer.ts';
 
-export interface OfferCardProps {
+interface OfferCardProps {
   id: string;
   offerData: MainOfferInfo;
   offerCardType: OfferCardType;
-  handleActiveCardIdChange: (newActiveCardId: string | undefined) => void;
+  handleActiveCardIdChange: (newActiveCardId: string) => void;
 }
 
 export const OfferCard: React.FC<OfferCardProps> = ({ id, offerData, offerCardType, handleActiveCardIdChange }) => {
   const { title, rating, price, type, isPremium, previewImage } = offerData;
 
+  const handleMouseOver = useCallback(() => handleActiveCardIdChange(id), [id, handleActiveCardIdChange]);
+  const handleMouseLeave = useCallback(() => handleActiveCardIdChange(id), [handleActiveCardIdChange, id]);
+
   return (
     <article
       className={OFFER_CARD_CLASSNAMES[offerCardType].item}
-      onMouseOver={() => handleActiveCardIdChange(id)}
-      onMouseLeave={() => handleActiveCardIdChange(undefined)}
+      onMouseOver={handleMouseOver}
+      onMouseLeave={handleMouseLeave}
     >
       { isPremium && (
         <div className="place-card__mark">

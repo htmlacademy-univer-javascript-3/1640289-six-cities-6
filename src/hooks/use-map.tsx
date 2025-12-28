@@ -1,14 +1,15 @@
 import { useEffect, useState, MutableRefObject, useRef } from 'react';
 import { Map, TileLayer } from 'leaflet';
-import {useAppSelector} from './use-store.ts';
+import { RootState } from './use-store.ts';
+import { MAP_ZOOM_DEFAULT } from '../shared/constants/map.ts';
+import { useSelector } from 'react-redux';
 
 function useMap(
   mapRef: MutableRefObject<HTMLElement | null>,
 ): Map | null {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef<boolean>(false);
-
-  const city = useAppSelector((state) => state.city);
+  const { city } = useSelector((state: RootState) => state.city);
 
   useEffect(() => {
     if (mapRef.current !== null && !isRenderedRef.current) {
@@ -17,7 +18,7 @@ function useMap(
           lat: city.location.latitude,
           lng: city.location.longitude,
         },
-        zoom: 12
+        zoom: MAP_ZOOM_DEFAULT
       });
 
       const layer = new TileLayer(

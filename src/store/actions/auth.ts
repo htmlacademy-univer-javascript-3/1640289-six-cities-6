@@ -1,14 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {AppDispatchType} from '../index.ts';
-import {StateType} from '../reducer.ts';
-import {AxiosInstance} from 'axios';
-import {ApiEndpoint, removeToken, saveToken} from '../../api/api.utils.ts';
-import { setAuthStatus, setName} from '../action.ts';
-import {AuthStatus} from '../../shared/constants/auth.ts';
-import {RoutePath} from '../../shared/constants/router.ts';
-import {AuthData} from '../../shared/types/auth.ts';
-import {UserInfo} from '../../shared/types/user.ts';
+import { AppDispatchType, StateType } from '../index.ts';
+import { AxiosInstance } from 'axios';
+import { ApiEndpoint, removeToken, saveToken } from '../../shared/utils/api.ts';
+import { AuthStatus } from '../../shared/constants/auth.ts';
+import { RoutePath } from '../../shared/constants/router.ts';
+import { AuthData } from '../../shared/types/auth.ts';
+import { UserInfo } from '../../shared/types/user.ts';
 import { NavigateFunction } from 'react-router-dom';
+import { setAuthStatus, setName } from '../slices/auth.ts';
 
 export const authCheck = createAsyncThunk<void, undefined, {
   dispatch: AppDispatchType;

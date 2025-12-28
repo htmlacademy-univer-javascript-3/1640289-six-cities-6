@@ -1,4 +1,16 @@
-export const DEFAULT_OFFERS_LIST_LENGTH = 4;
+export enum OfferCardType {
+  Main = 'main',
+  Offer = 'offer',
+  Favorites = 'favorites'
+}
+
+export enum OffersSortType {
+  Popular = 'Popular',
+  PriceLowToHigh = 'Price: low to high',
+  PriceHightToLow = 'Price: high to low',
+  TopRated = 'Top rated first',
+}
+
 export const NEAR_OFFERS_LIST_LENGTH = 3;
 
 export const OFFER_CARD_CLASSNAMES = {
@@ -19,29 +31,7 @@ export const OFFER_CARD_CLASSNAMES = {
   }
 };
 
-export enum OfferPlaceType {
-  Apartment = 'Apartment',
-  Flat = 'Flat',
-  House = 'House'
-}
-
-export enum OfferHostStatus {
-  Pro = 'Pro',
-  Beginner = 'Beginner'
-}
-
-export enum OfferCardType {
-  Main = 'main',
-  Offer = 'offer',
-  Favorites = 'favorites'
-}
-
-export enum OffersSortType {
-  Popular = 'Popular',
-  PriceLowToHigh = 'Price: low to high',
-  PriceHightToLow = 'Price: high to low',
-  TopRated = 'Top rated first',
-}
+export const SORT_TYPES = Object.values(OffersSortType);
 
 export const RATING_VALUES = [
   {

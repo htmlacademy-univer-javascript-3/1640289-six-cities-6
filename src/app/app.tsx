@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import PrivateRoute from '../components/private-route.tsx';
 
@@ -9,23 +10,26 @@ import { Offer } from '../pages/offer';
 import { NotFoundPage } from '../pages/not-found-page';
 
 import { RoutePath } from '../shared/constants/router.ts';
-import {useAppDispatch, useAppSelector} from '../hooks/use-store.ts';
-import {fetchOffers} from '../store/actions/offer-action.ts';
+import { RootState, useAppDispatch } from '../hooks/use-store.ts';
+import { fetchOffers } from '../store/actions/offer-action.ts';
 import Spinner from '../components/spinner/spinner.tsx';
-import {authCheck} from '../store/actions/auth.ts';
+import { authCheck } from '../store/actions/auth.ts';
+import { useSelector } from 'react-redux';
 
 const App = () => {
   const dispatch = useAppDispatch();
+  const { offersLoading } = useSelector((state: RootState) => state.offers);
 
-  const isLoading = useAppSelector((state) => state.offersLoading);
+  useEffect(() => {
+    if (offersLoading) {
+      dispatch(fetchOffers());
+    }
+    dispatch(authCheck());
+  }, [dispatch, offersLoading]);
 
-  if (isLoading) {
-    dispatch(fetchOffers());
-
+  if (offersLoading) {
     return <Spinner />;
   }
-
-  dispatch(authCheck());
 
   return (
     <BrowserRouter>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { OfferFeedback } from '../../../shared/types/offer.ts';
 import { getRatingPercent } from '../../../shared/utils/offer.ts';
@@ -10,6 +10,9 @@ interface OfferReviewProps {
 
 export const OfferReview: React.FC<OfferReviewProps> = ({ reviewData }) => {
   const { date, user, comment, rating } = reviewData;
+
+  const ratingWidth = useMemo(() => getRatingPercent(rating), [rating]);
+  const formattedDate = useMemo(() => getFormattedDate(date), [date]);
 
   return (
     <li className="reviews__item">
@@ -26,7 +29,7 @@ export const OfferReview: React.FC<OfferReviewProps> = ({ reviewData }) => {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{ width: getRatingPercent(rating) }}></span>
+            <span style={{ width: ratingWidth }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -35,7 +38,7 @@ export const OfferReview: React.FC<OfferReviewProps> = ({ reviewData }) => {
           {comment}
         </p>
 
-        <time className="reviews__time" dateTime={date}>{getFormattedDate(date)}</time>
+        <time className="reviews__time" dateTime={date}>{formattedDate}</time>
       </div>
     </li>
   );

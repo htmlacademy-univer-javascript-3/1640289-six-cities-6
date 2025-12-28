@@ -1,10 +1,4 @@
-import { OfferHostStatus } from '../constants/offer.ts';
-
-export type LocationType = {
-  latitude: number;
-  longitude: number;
-  zoom: number;
-}
+import { LocationType } from './map.ts';
 
 export interface MainOfferInfo {
   id: string;
@@ -32,13 +26,6 @@ export type AdditionalOfferInfo = Omit<MainOfferInfo, 'previewImage'> & {
   host: OfferUser;
   images: string[];
   maxAdults: number;
-}
-
-export interface OfferHostInfo {
-  name: string;
-  avatar: string;
-  status: OfferHostStatus;
-  description: string[];
 }
 
 export interface OfferFeedback {

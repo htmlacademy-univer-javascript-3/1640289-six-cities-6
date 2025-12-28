@@ -1,12 +1,5 @@
 import { Icon } from 'leaflet';
 
-export type City = {
-  title: string;
-  lat: number;
-  lng: number;
-  zoom: number;
-};
-
 export type Point = {
   lat: number;
   lon: number;
@@ -14,3 +7,9 @@ export type Point = {
 };
 
 export type Points = Point[];
+
+export type LocationType = {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+}
