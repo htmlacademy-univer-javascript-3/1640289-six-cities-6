@@ -52,7 +52,7 @@ export const Offer = () => {
           <div className="offer__container container">
             <div className="offer__wrapper">
               <OfferInfo offerData={currentOffer} />
-              <OfferHost hostData={currentOffer.host} />
+              <OfferHost hostData={currentOffer.host} description={currentOffer.description} />
 
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">

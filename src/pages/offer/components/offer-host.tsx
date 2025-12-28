@@ -4,9 +4,10 @@ import { OfferUser} from '../../../shared/types/offer.ts';
 
 interface OfferHostProps {
   hostData: OfferUser;
+  description: string;
 }
 
-export const OfferHost: React.FC<OfferHostProps> = ({ hostData }) => {
+export const OfferHost: React.FC<OfferHostProps> = ({ hostData, description }) => {
   const { name, avatarUrl, isPro } = hostData;
 
   return (
@@ -29,13 +30,11 @@ export const OfferHost: React.FC<OfferHostProps> = ({ hostData }) => {
           )}
         </div>
 
-        {/*<div className="offer__description">*/}
-        {/*  { description.map((item) => (*/}
-        {/*    <p key={uuidv4()} className="offer__text">*/}
-        {/*      {item}*/}
-        {/*    </p>*/}
-        {/*  )) }*/}
-        {/*</div>*/}
+        <div className="offer__description">
+          <p className="offer__text">
+            {description}
+          </p>
+        </div>
       </div>
     )
   );
