@@ -8,17 +8,17 @@ import { Favorites } from './favorites';
 import * as citySlice from '../../store/slices/city';
 import { MainOfferInfo, OfferCity } from '../../shared/types/offer';
 
-vi.mock('../../components/header.tsx', () => ({
+vi.mock('../../components/header/header.tsx', () => ({
   Header: () => <div>Header</div>,
 }));
 
-vi.mock('../offer/components/offer-list.tsx', () => ({
+vi.mock('../../components/offer/offer-list/offer-list.tsx', () => ({
   OfferList: ({ offers }: { offers: MainOfferInfo[] }) => (
     <div data-testid="offer-list">Offers: {offers.length}</div>
   ),
 }));
 
-vi.mock('./components/favorite-empty.tsx', () => ({
+vi.mock('../favorite-empty/favorite-empty.tsx', () => ({
   FavoriteEmpty: () => <div>No favorites</div>,
 }));
 
@@ -27,7 +27,7 @@ vi.mock('../../store/slices/city', () => ({
 }));
 
 describe('Favorites', () => {
-  const mockCity1: OfferCity = {
+  const MOCK_CITY1: OfferCity = {
     name: 'Paris',
     location: {
       latitude: 48.85661,
@@ -36,7 +36,7 @@ describe('Favorites', () => {
     },
   };
 
-  const mockCity2: OfferCity = {
+  const MOCK_CITY2: OfferCity = {
     name: 'Amsterdam',
     location: {
       latitude: 52.370216,
@@ -45,14 +45,14 @@ describe('Favorites', () => {
     },
   };
 
-  const mockOffers: MainOfferInfo[] = [
+  const MOCK_OFFERS: MainOfferInfo[] = [
     {
       id: '1',
       title: 'Offer 1',
       type: 'apartment',
       price: 120,
-      city: mockCity1,
-      location: mockCity1.location,
+      city: MOCK_CITY1,
+      location: MOCK_CITY1.location,
       isFavorite: true,
       isPremium: false,
       rating: 4.5,
@@ -63,8 +63,8 @@ describe('Favorites', () => {
       title: 'Offer 2',
       type: 'house',
       price: 200,
-      city: mockCity1,
-      location: mockCity1.location,
+      city: MOCK_CITY1,
+      location: MOCK_CITY1.location,
       isFavorite: true,
       isPremium: true,
       rating: 4.8,
@@ -75,8 +75,8 @@ describe('Favorites', () => {
       title: 'Offer 3',
       type: 'room',
       price: 80,
-      city: mockCity2,
-      location: mockCity2.location,
+      city: MOCK_CITY2,
+      location: MOCK_CITY2.location,
       isFavorite: true,
       isPremium: false,
       rating: 4.2,
@@ -109,7 +109,7 @@ describe('Favorites', () => {
   });
 
   it('it should display the "Saved listing" header', () => {
-    const store = createMockStore(mockOffers);
+    const store = createMockStore(MOCK_OFFERS);
 
     renderWithProviders(<Favorites />, store);
 
@@ -117,7 +117,7 @@ describe('Favorites', () => {
   });
 
   it('the Header component must display', () => {
-    const store = createMockStore(mockOffers);
+    const store = createMockStore(MOCK_OFFERS);
 
     renderWithProviders(<Favorites />, store);
 
@@ -125,7 +125,7 @@ describe('Favorites', () => {
   });
 
   it('it should display a footer with a logo', () => {
-    const store = createMockStore(mockOffers);
+    const store = createMockStore(MOCK_OFFERS);
 
     renderWithProviders(<Favorites />, store);
 
@@ -136,7 +136,7 @@ describe('Favorites', () => {
   });
 
   it('must group offers by city', () => {
-    const store = createMockStore(mockOffers);
+    const store = createMockStore(MOCK_OFFERS);
 
     renderWithProviders(<Favorites />, store);
 
@@ -145,7 +145,7 @@ describe('Favorites', () => {
   });
 
   it('I have to sort the cities alphabetically', () => {
-    const store = createMockStore(mockOffers);
+    const store = createMockStore(MOCK_OFFERS);
 
     renderWithProviders(<Favorites />, store);
 
@@ -155,7 +155,7 @@ describe('Favorites', () => {
   });
 
   it('it should display an OfferList for each city', () => {
-    const store = createMockStore(mockOffers);
+    const store = createMockStore(MOCK_OFFERS);
 
     renderWithProviders(<Favorites />, store);
 
@@ -167,7 +167,7 @@ describe('Favorites', () => {
 
   it('it should call setCity when clicking on a city', async () => {
     const user = userEvent.setup();
-    const store = createMockStore(mockOffers);
+    const store = createMockStore(MOCK_OFFERS);
     const setCitySpy = vi.spyOn(citySlice, 'setCity');
 
     renderWithProviders(<Favorites />, store);
@@ -175,11 +175,11 @@ describe('Favorites', () => {
     const parisLink = screen.getByText('Paris');
     await user.click(parisLink);
 
-    expect(setCitySpy).toHaveBeenCalledWith(mockCity1);
+    expect(setCitySpy).toHaveBeenCalledWith(MOCK_CITY1);
   });
 
   it('It must contain links to the main page for cities', () => {
-    const store = createMockStore(mockOffers);
+    const store = createMockStore(MOCK_OFFERS);
 
     renderWithProviders(<Favorites />, store);
 
@@ -190,7 +190,7 @@ describe('Favorites', () => {
   });
 
   it('One city with several offers must be processed correctly', () => {
-    const singleCityOffers = mockOffers.filter((offer) => offer.city.name === 'Paris');
+    const singleCityOffers = MOCK_OFFERS.filter((offer) => offer.city.name === 'Paris');
     const store = createMockStore(singleCityOffers);
 
     renderWithProviders(<Favorites />, store);
@@ -204,7 +204,7 @@ describe('Favorites', () => {
   });
 
   it('It must display the correct page structure', () => {
-    const store = createMockStore(mockOffers);
+    const store = createMockStore(MOCK_OFFERS);
 
     const { container } = renderWithProviders(<Favorites />, store);
 

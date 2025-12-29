@@ -7,7 +7,7 @@ import currentOfferReducer, {
 } from './current-offer.ts';
 import { AdditionalOfferInfo, MainOfferInfo, OfferFeedback } from '../../shared/types/offer.ts';
 
-const initialState = {
+const INITIAL_STATE = {
   currentOffer: null,
   currentOfferId: undefined,
   currentOfferLoading: false,
@@ -17,11 +17,11 @@ const initialState = {
 
 describe('currentOfferSlice', () => {
   it('should return the initial state', () => {
-    expect(currentOfferReducer(undefined, { type: undefined })).toEqual(initialState);
+    expect(currentOfferReducer(undefined, { type: undefined })).toEqual(INITIAL_STATE);
   });
 
   it('should handle setCurrentOffer action', () => {
-    const newOffer: AdditionalOfferInfo = {
+    const NEW_OFFER: AdditionalOfferInfo = {
       id: '1',
       title: 'Offer 1',
       type: 'apartment',
@@ -43,39 +43,39 @@ describe('currentOfferSlice', () => {
       maxAdults: 4,
     };
 
-    const action = setCurrentOffer(newOffer);
-    const expectedState = {
-      ...initialState,
-      currentOffer: newOffer,
+    const action = setCurrentOffer(NEW_OFFER);
+    const EXPECTED_STATE = {
+      ...INITIAL_STATE,
+      currentOffer: NEW_OFFER,
     };
 
-    expect(currentOfferReducer(initialState, action)).toEqual(expectedState);
+    expect(currentOfferReducer(INITIAL_STATE, action)).toEqual(EXPECTED_STATE);
   });
 
   it('should handle setCurrentOfferId action', () => {
-    const offerId = '123';
-    const action = setCurrentOfferId(offerId);
-    const expectedState = {
-      ...initialState,
-      currentOfferId: offerId,
+    const OFFER_ID = '123';
+    const action = setCurrentOfferId(OFFER_ID);
+    const EXPECTED_STATE = {
+      ...INITIAL_STATE,
+      currentOfferId: OFFER_ID,
     };
 
-    expect(currentOfferReducer(initialState, action)).toEqual(expectedState);
+    expect(currentOfferReducer(INITIAL_STATE, action)).toEqual(EXPECTED_STATE);
   });
 
   it('should handle setCurrentOfferLoading action', () => {
-    const loadingState = true;
-    const action = setCurrentOfferLoading(loadingState);
-    const expectedState = {
-      ...initialState,
-      currentOfferLoading: loadingState,
+    const LOADING_STATE = true;
+    const action = setCurrentOfferLoading(LOADING_STATE);
+    const EXPECTED_STATE = {
+      ...INITIAL_STATE,
+      currentOfferLoading: LOADING_STATE,
     };
 
-    expect(currentOfferReducer(initialState, action)).toEqual(expectedState);
+    expect(currentOfferReducer(INITIAL_STATE, action)).toEqual(EXPECTED_STATE);
   });
 
   it('should handle setCurrentOfferFeedbacks action', () => {
-    const feedbacks: OfferFeedback[] = [
+    const FEEDBACKS: OfferFeedback[] = [
       {
         id: 'feedback1',
         date: '2025-12-28',
@@ -91,17 +91,17 @@ describe('currentOfferSlice', () => {
         rating: 3,
       },
     ];
-    const action = setCurrentOfferFeedbacks(feedbacks);
-    const expectedState = {
-      ...initialState,
-      currentOfferFeedbacks: feedbacks,
+    const action = setCurrentOfferFeedbacks(FEEDBACKS);
+    const EXPECTED_STATE = {
+      ...INITIAL_STATE,
+      currentOfferFeedbacks: FEEDBACKS,
     };
 
-    expect(currentOfferReducer(initialState, action)).toEqual(expectedState);
+    expect(currentOfferReducer(INITIAL_STATE, action)).toEqual(EXPECTED_STATE);
   });
 
   it('should handle setCurrentOfferNearbyOffers action', () => {
-    const nearbyOffers: MainOfferInfo[] = [
+    const NEARBY_OFFERS: MainOfferInfo[] = [
       {
         id: '2',
         title: 'Nearby Offer 1',
@@ -127,12 +127,12 @@ describe('currentOfferSlice', () => {
         previewImage: 'https://example.com/nearby2.jpg',
       },
     ];
-    const action = setCurrentOfferNearbyOffers(nearbyOffers);
-    const expectedState = {
-      ...initialState,
-      currentOfferNearby: nearbyOffers,
+    const action = setCurrentOfferNearbyOffers(NEARBY_OFFERS);
+    const EXPECTED_STATE = {
+      ...INITIAL_STATE,
+      currentOfferNearby: NEARBY_OFFERS,
     };
 
-    expect(currentOfferReducer(initialState, action)).toEqual(expectedState);
+    expect(currentOfferReducer(INITIAL_STATE, action)).toEqual(EXPECTED_STATE);
   });
 });

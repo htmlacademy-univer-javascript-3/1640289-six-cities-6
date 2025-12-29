@@ -4,11 +4,11 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { Login } from './login';
 
-vi.mock('./components/login-form.tsx', () => ({
+vi.mock('../../components/login-form/login-form.tsx', () => ({
   LoginForm: () => <div data-testid="login-form">Login Form</div>
 }));
 
-vi.mock('../../components/header.tsx', () => ({
+vi.mock('../../components/header/header.tsx', () => ({
   Header: () => <div data-testid="header">Header</div>
 }));
 

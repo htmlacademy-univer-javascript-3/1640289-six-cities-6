@@ -1,6 +1,6 @@
 import { RoutePath } from '../constants/router.ts';
 import { MainOfferInfo, OfferCity} from '../types/offer.ts';
-import {COMMENT_OPTIONS, OffersSortType} from '../constants/offer.ts';
+import { COMMENT_OPTIONS, OffersSortType } from '../constants/offer.ts';
 import { CURRENT_CUSTOM_ICON, DEFAULT_CUSTOM_ICON } from '../constants/asset.ts';
 
 export const getRatingPercent = (ratingNumber: number) => {

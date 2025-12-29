@@ -5,15 +5,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Main } from './main';
 import { OfferCardType } from '../../shared/constants/offer.ts';
 
-vi.mock('../../components/city-list.tsx', () => ({
+vi.mock('../../components/city-list/city-list.tsx', () => ({
   CitiesList: () => <div data-testid="cities-list">Cities List</div>
 }));
 
-vi.mock('../../components/header.tsx', () => ({
+vi.mock('../../components/header/header.tsx', () => ({
   Header: () => <div data-testid="header">Header</div>
 }));
 
-vi.mock('../offer/components/offer-list.tsx', () => ({
+vi.mock('../../components/offer/offer-list/offer-list.tsx', () => ({
   OfferList: ({ offers, offerCardType }: { offers: unknown[]; offerCardType: string }) => (
     <div data-testid="offer-list" data-offer-type={offerCardType}>
       Offers: {offers.length}
@@ -21,11 +21,11 @@ vi.mock('../offer/components/offer-list.tsx', () => ({
   )
 }));
 
-vi.mock('../offer/components/offer-sort.tsx', () => ({
+vi.mock('../../components/offer/offer-sort/offer-sort.tsx', () => ({
   OffersSort: () => <div data-testid="offers-sort">Offers Sort</div>
 }));
 
-vi.mock('../../components/map.tsx', () => ({
+vi.mock('../../components/map/map.tsx', () => ({
   default: ({ points, additionalClass }: { points: unknown[]; additionalClass: string }) => (
     <div data-testid="map" data-class={additionalClass}>
       Map with {points.length} points
@@ -33,7 +33,7 @@ vi.mock('../../components/map.tsx', () => ({
   )
 }));
 
-vi.mock('./components/main-empty.tsx', () => ({
+vi.mock('../main-empty/main-empty.tsx', () => ({
   MainEmpty: () => <div data-testid="main-empty">Main Empty</div>
 }));
 

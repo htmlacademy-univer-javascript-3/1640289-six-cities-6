@@ -1,14 +1,14 @@
-import { OfferList } from '../offer/components/offer-list.tsx';
-import Map from '../../components/map.tsx';
+import { OfferList } from '../../components/offer/offer-list/offer-list.tsx';
+import Map from '../../components/map/map.tsx';
 import { getCoordinatesOffers } from '../../shared/utils/offer.ts';
 import { OfferCardType } from '../../shared/constants/offer.ts';
 import { RootState } from '../../hooks/use-store.ts';
-import { CitiesList } from '../../components/city-list.tsx';
-import { OffersSort } from '../offer/components/offer-sort.tsx';
-import { Header } from '../../components/header.tsx';
+import { CitiesList } from '../../components/city-list/city-list.tsx';
+import { OffersSort } from '../../components/offer/offer-sort/offer-sort.tsx';
+import { Header } from '../../components/header/header.tsx';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { MainEmpty } from './components/main-empty.tsx';
+import { MainEmpty } from '../main-empty/main-empty.tsx';
 
 export const Main = () => {
   const { currentOfferId } = useSelector((state: RootState) => state.currentOffer);

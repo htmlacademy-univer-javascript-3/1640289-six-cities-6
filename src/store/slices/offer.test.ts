@@ -8,14 +8,14 @@ vi.mock('../../shared/utils/offer.ts', () => ({
 }));
 
 describe('offersSlice reducer', () => {
-  const initialState = {
+  const INITIAL_STATE = {
     initialOffers: [],
     offers: [],
     offersLoading: true,
     offersSort: OffersSortType.Popular,
   };
 
-  const sampleOffers: MainOfferInfo[] = [
+  const SAMPLE_OFFERS: MainOfferInfo[] = [
     {
       id: '1',
       title: 'Offer 1',
@@ -43,28 +43,28 @@ describe('offersSlice reducer', () => {
   ];
 
   it('should return the initial state', () => {
-    expect(offersReducer(undefined, { type: undefined })).toEqual(initialState);
+    expect(offersReducer(undefined, { type: undefined })).toEqual(INITIAL_STATE);
   });
 
   it('should handle setInitialOffers', () => {
-    expect(offersReducer(initialState, setInitialOffers(sampleOffers))).toEqual({
-      ...initialState,
-      initialOffers: sampleOffers,
+    expect(offersReducer(INITIAL_STATE, setInitialOffers(SAMPLE_OFFERS))).toEqual({
+      ...INITIAL_STATE,
+      initialOffers: SAMPLE_OFFERS,
     });
   });
 
   it('should handle setOffers', () => {
-    expect(offersReducer(initialState, setOffers(sampleOffers))).toEqual({
-      ...initialState,
-      offers: sampleOffers,
+    expect(offersReducer(INITIAL_STATE, setOffers(SAMPLE_OFFERS))).toEqual({
+      ...INITIAL_STATE,
+      offers: SAMPLE_OFFERS,
     });
   });
 
   it('should handle setOffersLoading', () => {
-    const loadingState = false;
-    expect(offersReducer(initialState, setOffersLoading(loadingState))).toEqual({
-      ...initialState,
-      offersLoading: loadingState,
+    const LOADING_STATE = false;
+    expect(offersReducer(INITIAL_STATE, setOffersLoading(LOADING_STATE))).toEqual({
+      ...INITIAL_STATE,
+      offersLoading: LOADING_STATE,
     });
   });
 });

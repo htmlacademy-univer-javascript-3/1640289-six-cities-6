@@ -1,14 +1,14 @@
-import { OfferList } from '../offer/components/offer-list.tsx';
+import { OfferList } from '../../components/offer/offer-list/offer-list.tsx';
 import { OfferCardType } from '../../shared/constants/offer.ts';
 import { RootState, useAppDispatch } from '../../hooks/use-store.ts';
-import { Header } from '../../components/header.tsx';
+import { Header } from '../../components/header/header.tsx';
 import { useSelector } from 'react-redux';
 import { useCallback, useMemo } from 'react';
 import { MainOfferInfo, OfferCity } from '../../shared/types/offer.ts';
 import { setCity } from '../../store/slices/city.ts';
 import { Link } from 'react-router-dom';
 import { RoutePath } from '../../shared/constants/router.ts';
-import { FavoriteEmpty } from './components/favorite-empty.tsx';
+import { FavoriteEmpty } from '../favorite-empty/favorite-empty.tsx';
 
 export const Favorites = () => {
   const { offerFavorites } = useSelector((state: RootState) => state.favorites);

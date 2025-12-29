@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import PrivateRoute from '../components/private-route.tsx';
+import PrivateRoute from '../components/private-route/private-route.tsx';
 
 import { Main } from '../pages/main';
 import { Favorites } from '../pages/favorites';

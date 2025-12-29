@@ -57,7 +57,7 @@ describe('Offer Actions', () => {
     post: vi.fn(),
   } as unknown as AxiosInstance;
 
-  const mockCity = {
+  const MOCK_CITY = {
     name: 'Paris',
     location: {
       latitude: 48.85661,
@@ -66,14 +66,14 @@ describe('Offer Actions', () => {
     },
   };
 
-  const mockOffers: MainOfferInfo[] = [
+  const MOCK_OFFERS: MainOfferInfo[] = [
     {
       id: '1',
       title: 'Offer 1',
       type: 'apartment',
       price: 120,
-      city: mockCity,
-      location: mockCity.location,
+      city: MOCK_CITY,
+      location: MOCK_CITY.location,
       isFavorite: false,
       isPremium: false,
       rating: 4.5,
@@ -84,8 +84,8 @@ describe('Offer Actions', () => {
       title: 'Offer 2',
       type: 'house',
       price: 200,
-      city: mockCity,
-      location: mockCity.location,
+      city: MOCK_CITY,
+      location: MOCK_CITY.location,
       isFavorite: true,
       isPremium: true,
       rating: 4.8,
@@ -99,21 +99,21 @@ describe('Offer Actions', () => {
 
   describe('fetchOffers', () => {
     it('must download the offers and set the city', async () => {
-      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockOffers });
+      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_OFFERS });
 
       const action = fetchOffers();
       await action(mockDispatch, mockGetState, mockApi);
 
       expect(mockApi.get).toHaveBeenCalledWith('offers');
-      expect(citySlice.setCity).toHaveBeenCalledWith(mockCity);
-      expect(offerSlice.setOffers).toHaveBeenCalledWith(mockOffers);
-      expect(offerSlice.setInitialOffers).toHaveBeenCalledWith(mockOffers);
+      expect(citySlice.setCity).toHaveBeenCalledWith(MOCK_CITY);
+      expect(offerSlice.setOffers).toHaveBeenCalledWith(MOCK_OFFERS);
+      expect(offerSlice.setInitialOffers).toHaveBeenCalledWith(MOCK_OFFERS);
       expect(offerSlice.setOffersLoading).toHaveBeenCalledWith(false);
     });
   });
 
   describe('fetchReviews', () => {
-    const mockReviews: OfferFeedback[] = [
+    const MOCK_REVIEWS: OfferFeedback[] = [
       {
         id: '1',
         comment: 'Great place!',
@@ -128,14 +128,14 @@ describe('Offer Actions', () => {
     ];
 
     it('must upload reviews for suggestions', async () => {
-      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockReviews });
+      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_REVIEWS });
 
       const action = fetchReviews({ offerId: '1' });
       const result = await action(mockDispatch, mockGetState, mockApi);
 
       expect(mockApi.get).toHaveBeenCalledWith('comments/1');
-      expect(currentOfferSlice.setCurrentOfferFeedbacks).toHaveBeenCalledWith(mockReviews);
-      expect(result.payload).toEqual(mockReviews);
+      expect(currentOfferSlice.setCurrentOfferFeedbacks).toHaveBeenCalledWith(MOCK_REVIEWS);
+      expect(result.payload).toEqual(MOCK_REVIEWS);
     });
 
     it('should return rejectWithValue in case of error', async () => {
@@ -150,7 +150,7 @@ describe('Offer Actions', () => {
 
   describe('fetchNearby', () => {
     it('must upload the next offers', async () => {
-      const nearbyOffers = [mockOffers[1]];
+      const nearbyOffers = [MOCK_OFFERS[1]];
       (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: nearbyOffers });
 
       const action = fetchNearby({ offerId: '1' });
@@ -172,13 +172,13 @@ describe('Offer Actions', () => {
   });
 
   describe('fetchCurrentOffer', () => {
-    const mockAdditionalOffer: AdditionalOfferInfo = {
+    const MOCK_ADDITIONAL_OFFER: AdditionalOfferInfo = {
       id: '1',
       title: 'Beautiful Apartment',
       type: 'apartment',
       price: 120,
-      city: mockCity,
-      location: mockCity.location,
+      city: MOCK_CITY,
+      location: MOCK_CITY.location,
       isFavorite: false,
       isPremium: false,
       rating: 4.5,
@@ -195,16 +195,16 @@ describe('Offer Actions', () => {
     };
 
     it('must download the current offer and related data', async () => {
-      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockAdditionalOffer });
+      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_ADDITIONAL_OFFER });
 
       const action = fetchCurrentOffer({ offerId: '1', navigate: mockNavigate });
       const result = await action(mockDispatch, mockGetState, mockApi);
 
       expect(mockApi.get).toHaveBeenCalledWith('offers/1');
       expect(currentOfferSlice.setCurrentOfferLoading).toHaveBeenCalledWith(true);
-      expect(currentOfferSlice.setCurrentOffer).toHaveBeenCalledWith(mockAdditionalOffer);
+      expect(currentOfferSlice.setCurrentOffer).toHaveBeenCalledWith(MOCK_ADDITIONAL_OFFER);
       expect(currentOfferSlice.setCurrentOfferLoading).toHaveBeenCalledWith(false);
-      expect(result.payload).toEqual(mockAdditionalOffer);
+      expect(result.payload).toEqual(MOCK_ADDITIONAL_OFFER);
     });
 
     it('it should redirect to NotFound in case of an error', async () => {
@@ -231,7 +231,7 @@ describe('Offer Actions', () => {
   });
 
   describe('postReview', () => {
-    const mockFeedbackInfo: FeedbackInfo = {
+    const MOCK_FEEDBACK_INFO: FeedbackInfo = {
       comment: 'Great place!',
       rating: 5,
       offerId: '1',
@@ -240,7 +240,7 @@ describe('Offer Actions', () => {
     it('must submit a review and upload the updated reviews', async () => {
       (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({});
 
-      const action = postReview(mockFeedbackInfo);
+      const action = postReview(MOCK_FEEDBACK_INFO);
       await action(mockDispatch, mockGetState, mockApi);
 
       expect(mockApi.post).toHaveBeenCalledWith('comments/1', {
@@ -252,7 +252,7 @@ describe('Offer Actions', () => {
 
   describe('fetchFavorites', () => {
     it('must upload your favorite offers', async () => {
-      const favoriteOffers = [mockOffers[1]];
+      const favoriteOffers = [MOCK_OFFERS[1]];
       (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: favoriteOffers });
 
       const action = fetchFavorites();
@@ -265,8 +265,8 @@ describe('Offer Actions', () => {
   });
 
   describe('setBookmarkOffer', () => {
-    const mockAdditionalOffer: AdditionalOfferInfo = {
-      ...mockOffers[0],
+    const MOCK_ADDITIONAL_OFFER: AdditionalOfferInfo = {
+      ...MOCK_OFFERS[0],
       description: 'Description',
       bedrooms: 2,
       goods: ['Wi-Fi'],
@@ -280,19 +280,19 @@ describe('Offer Actions', () => {
     };
 
     it('I have to add a suggestion to my favorites', async () => {
-      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockAdditionalOffer });
+      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_ADDITIONAL_OFFER });
 
-      const action = setBookmarkOffer({ offer: mockOffers[0], status: 1 });
+      const action = setBookmarkOffer({ offer: MOCK_OFFERS[0], status: 1 });
       const result = await action(mockDispatch, mockGetState, mockApi);
 
       expect(mockApi.post).toHaveBeenCalledWith('favorite/1/1');
-      expect(result.payload).toEqual(mockAdditionalOffer);
+      expect(result.payload).toEqual(MOCK_ADDITIONAL_OFFER);
     });
 
     it('must delete the sentence from favorites', async () => {
-      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockAdditionalOffer });
+      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_ADDITIONAL_OFFER });
 
-      const action = setBookmarkOffer({ offer: mockOffers[1], status: 0 });
+      const action = setBookmarkOffer({ offer: MOCK_OFFERS[1], status: 0 });
       await action(mockDispatch, mockGetState, mockApi);
 
       expect(mockApi.post).toHaveBeenCalledWith('favorite/2/0');
@@ -301,8 +301,8 @@ describe('Offer Actions', () => {
 
   describe('Integration scenarios', () => {
     it('must upload full information about the offer with reviews and the nearest', async () => {
-      const mockAdditionalOffer: AdditionalOfferInfo = {
-        ...mockOffers[0],
+      const MOCK_ADDITIONAL_OFFER: AdditionalOfferInfo = {
+        ...MOCK_OFFERS[0],
         description: 'Description',
         bedrooms: 2,
         goods: ['Wi-Fi'],
@@ -315,18 +315,18 @@ describe('Offer Actions', () => {
         maxAdults: 4,
       };
 
-      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockAdditionalOffer });
+      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_ADDITIONAL_OFFER });
 
       const action = fetchCurrentOffer({ offerId: '1', navigate: mockNavigate });
       await action(mockDispatch, mockGetState, mockApi);
 
-      expect(currentOfferSlice.setCurrentOffer).toHaveBeenCalledWith(mockAdditionalOffer);
+      expect(currentOfferSlice.setCurrentOffer).toHaveBeenCalledWith(MOCK_ADDITIONAL_OFFER);
       expect(currentOfferSlice.setCurrentOfferLoading).toHaveBeenCalledTimes(2);
     });
 
     it('must update favorites after status change', async () => {
-      const mockAdditionalOffer: AdditionalOfferInfo = {
-        ...mockOffers[0],
+      const MOCK_ADDITIONAL_OFFER: AdditionalOfferInfo = {
+        ...MOCK_OFFERS[0],
         description: 'Description',
         bedrooms: 2,
         goods: ['Wi-Fi'],
@@ -339,9 +339,9 @@ describe('Offer Actions', () => {
         maxAdults: 4,
       };
 
-      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockAdditionalOffer });
+      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_ADDITIONAL_OFFER });
 
-      const action = setBookmarkOffer({ offer: mockOffers[0], status: 1 });
+      const action = setBookmarkOffer({ offer: MOCK_OFFERS[0], status: 1 });
       await action(mockDispatch, mockGetState, mockApi);
 
       expect(mockApi.post).toHaveBeenCalledWith('favorite/1/1');

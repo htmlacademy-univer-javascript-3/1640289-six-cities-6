@@ -17,31 +17,31 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-vi.mock('./components/offer-host.tsx', () => ({
+vi.mock('../../components/offer/offer-host/offer-host.tsx', () => ({
   OfferHost: ({ description }: { description: string }) => (
     <div data-testid="offer-host">Host: {description}</div>
   )
 }));
 
-vi.mock('./components/offer-gallery.tsx', () => ({
+vi.mock('../../components/offer/offer-gallery/offer-gallery.tsx', () => ({
   OfferGallery: ({ images }: { images: string[] }) => (
     <div data-testid="offer-gallery">Gallery: {images.length} images</div>
   )
 }));
 
-vi.mock('./components/offer-info.tsx', () => ({
+vi.mock('../../components/offer/offer-info/offer-info.tsx', () => ({
   OfferInfo: ({ offerData }: { offerData: { title: string } }) => (
     <div data-testid="offer-info">{offerData.title}</div>
   )
 }));
 
-vi.mock('./components/offer-review-form.tsx', () => ({
+vi.mock('../../components/offer/offer-review-form/offer-review-form.tsx', () => ({
   OfferReviewForm: ({ offerId }: { offerId?: string }) => (
     <div data-testid="offer-review-form">Review Form: {offerId}</div>
   )
 }));
 
-vi.mock('./components/offer-list.tsx', () => ({
+vi.mock('../../components/offer/offer-list/offer-list.tsx', () => ({
   OfferList: ({ offers, offerCardType }: { offers: unknown[]; offerCardType: string }) => (
     <div data-testid="offer-list" data-offer-type={offerCardType}>
       Nearby: {offers.length} offers
@@ -49,13 +49,13 @@ vi.mock('./components/offer-list.tsx', () => ({
   )
 }));
 
-vi.mock('./components/offer-review-list.tsx', () => ({
+vi.mock('../../components/offer/offer-review-list/offer-review-list.tsx', () => ({
   OfferReviewList: ({ reviews }: { reviews: unknown[] }) => (
     <div data-testid="offer-review-list">Reviews: {reviews.length}</div>
   )
 }));
 
-vi.mock('../../components/map.tsx', () => ({
+vi.mock('../../components/map/map.tsx', () => ({
   default: ({ points, additionalClass }: { points: unknown[]; additionalClass: string }) => (
     <div data-testid="map" data-class={additionalClass}>
       Map: {points.length} points
@@ -63,7 +63,7 @@ vi.mock('../../components/map.tsx', () => ({
   )
 }));
 
-vi.mock('../../components/header.tsx', () => ({
+vi.mock('../../components/header/header.tsx', () => ({
   Header: () => <div data-testid="header">Header</div>
 }));
 

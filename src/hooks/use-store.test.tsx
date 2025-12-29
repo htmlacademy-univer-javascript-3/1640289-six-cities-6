@@ -8,7 +8,7 @@ import { configureStore } from '@reduxjs/toolkit';
 describe('Hook: useStore', () => {
   describe('useAppDispatch', () => {
     it('should return dispatch function', () => {
-      const mockCity = {
+      const MOCK_CITY = {
         name: 'Paris',
         location: {
           latitude: 48.85661,
@@ -17,7 +17,7 @@ describe('Hook: useStore', () => {
         zoom: 13,
       };
 
-      const createMockStore = (city = mockCity) => configureStore({
+      const createMockStore = (city = MOCK_CITY) => configureStore({
         reducer: {
           city: () => ({ city }),
         },

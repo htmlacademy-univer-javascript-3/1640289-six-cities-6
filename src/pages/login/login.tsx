@@ -1,7 +1,7 @@
 import React from 'react';
 import { RootState } from '../../hooks/use-store.ts';
-import { LoginForm } from './components/login-form.tsx';
-import { Header } from '../../components/header.tsx';
+import { LoginForm } from '../../components/login-form/login-form.tsx';
+import { Header } from '../../components/header/header.tsx';
 import { useSelector } from 'react-redux';
 
 export const Login: React.FC = () => {

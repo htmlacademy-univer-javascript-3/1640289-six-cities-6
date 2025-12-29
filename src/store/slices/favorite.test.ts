@@ -1,17 +1,17 @@
 import favoritesReducer, { setFavorites } from './favorite.ts';
 import { MainOfferInfo } from '../../shared/types/offer.ts';
 
-const initialState = {
+const INITIAL_STATE = {
   offerFavorites: [],
 };
 
 describe('favoritesSlice', () => {
   it('should return the initial state', () => {
-    expect(favoritesReducer(undefined, { type: undefined })).toEqual(initialState);
+    expect(favoritesReducer(undefined, { type: undefined })).toEqual(INITIAL_STATE);
   });
 
   it('should handle setFavorites action', () => {
-    const favoriteOffers: MainOfferInfo[] = [
+    const FAVORITE_OFFERS: MainOfferInfo[] = [
       {
         id: '1',
         title: 'Favorite Offer 1',
@@ -38,11 +38,11 @@ describe('favoritesSlice', () => {
       },
     ];
 
-    const action = setFavorites(favoriteOffers);
+    const action = setFavorites(FAVORITE_OFFERS);
     const expectedState = {
-      offerFavorites: favoriteOffers,
+      offerFavorites: FAVORITE_OFFERS,
     };
 
-    expect(favoritesReducer(initialState, action)).toEqual(expectedState);
+    expect(favoritesReducer(INITIAL_STATE, action)).toEqual(expectedState);
   });
 });

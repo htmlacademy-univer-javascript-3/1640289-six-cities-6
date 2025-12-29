@@ -41,7 +41,7 @@ describe('Auth Actions', () => {
 
   describe('authCheck', () => {
     it('must set the Auth status upon successful verification', async () => {
-      const mockUserInfo: UserInfo = {
+      const MOCK_USER_INFO: UserInfo = {
         name: 'John Doe',
         avatarUrl: 'avatar.jpg',
         isPro: false,
@@ -49,13 +49,13 @@ describe('Auth Actions', () => {
         token: 'mock-token',
       };
 
-      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockUserInfo });
+      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_USER_INFO });
 
       const action = authCheck();
       await action(mockDispatch, vi.fn(), mockApi);
 
       expect(mockApi.get).toHaveBeenCalledWith('/login');
-      expect(authSlice.setName).toHaveBeenCalledWith(mockUserInfo.name);
+      expect(authSlice.setName).toHaveBeenCalledWith(MOCK_USER_INFO.name);
       expect(authSlice.setAuthStatus).toHaveBeenCalledWith(AuthStatus.Auth);
     });
 
@@ -73,12 +73,12 @@ describe('Auth Actions', () => {
 
   describe('authLogin', () => {
     it('must log in and redirect to the main page', async () => {
-      const mockAuthData: AuthData = {
+      const MOCK_AUTH_DATA: AuthData = {
         email: 'test@example.com',
         password: 'password123',
       };
 
-      const mockUserInfo: UserInfo = {
+      const MOCK_USER_INFO: UserInfo = {
         name: 'John Doe',
         avatarUrl: 'avatar.jpg',
         isPro: false,
@@ -86,14 +86,14 @@ describe('Auth Actions', () => {
         token: 'mock-token-12345',
       };
 
-      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockUserInfo });
+      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_USER_INFO });
 
-      const action = authLogin({ payload: mockAuthData, navigate: mockNavigate });
+      const action = authLogin({ payload: MOCK_AUTH_DATA, navigate: mockNavigate });
       await action(mockDispatch, vi.fn(), mockApi);
 
-      expect(mockApi.post).toHaveBeenCalledWith('/login', mockAuthData);
-      expect(apiUtils.saveToken).toHaveBeenCalledWith(mockUserInfo.token);
-      expect(authSlice.setName).toHaveBeenCalledWith(mockUserInfo.name);
+      expect(mockApi.post).toHaveBeenCalledWith('/login', MOCK_AUTH_DATA);
+      expect(apiUtils.saveToken).toHaveBeenCalledWith(MOCK_USER_INFO.token);
+      expect(authSlice.setName).toHaveBeenCalledWith(MOCK_USER_INFO.name);
       expect(authSlice.setAuthStatus).toHaveBeenCalledWith(AuthStatus.Auth);
       expect(mockNavigate).toHaveBeenCalledWith(RoutePath.Main);
     });
@@ -126,12 +126,12 @@ describe('Auth Actions', () => {
 
   describe('Integration scenarios', () => {
     it('must correctly process the full cycle: input -> check -> output', async () => {
-      const mockAuthData: AuthData = {
+      const MOCK_AUTH_DATA: AuthData = {
         email: 'test@example.com',
         password: 'password123',
       };
 
-      const mockUserInfo: UserInfo = {
+      const MOCK_USER_INFO: UserInfo = {
         name: 'John Doe',
         avatarUrl: 'avatar.jpg',
         isPro: false,
@@ -139,14 +139,14 @@ describe('Auth Actions', () => {
         token: 'mock-token',
       };
 
-      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockUserInfo });
+      (mockApi.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_USER_INFO });
 
-      const loginAction = authLogin({ payload: mockAuthData, navigate: mockNavigate });
+      const loginAction = authLogin({ payload: MOCK_AUTH_DATA, navigate: mockNavigate });
       await loginAction(mockDispatch, vi.fn(), mockApi);
 
       expect(authSlice.setAuthStatus).toHaveBeenCalledWith(AuthStatus.Auth);
 
-      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockUserInfo });
+      (mockApi.get as ReturnType<typeof vi.fn>).mockResolvedValue({ data: MOCK_USER_INFO });
 
       const checkAction = authCheck();
       await checkAction(mockDispatch, vi.fn(), mockApi);

@@ -1,17 +1,17 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { OfferHost } from './components/offer-host.tsx';
-import { OfferGallery } from './components/offer-gallery.tsx';
-import { OfferInfo } from './components/offer-info.tsx';
-import { OfferReviewForm } from './components/offer-review-form.tsx';
-import { OfferList } from './components/offer-list.tsx';
-import { OfferReviewList } from './components/offer-review-list.tsx';
-import Map from '../../components/map.tsx';
+import { OfferHost } from '../../components/offer/offer-host/offer-host.tsx';
+import { OfferGallery } from '../../components/offer/offer-gallery/offer-gallery.tsx';
+import { OfferInfo } from '../../components/offer/offer-info/offer-info.tsx';
+import { OfferReviewForm } from '../../components/offer/offer-review-form/offer-review-form.tsx';
+import { OfferList } from '../../components/offer/offer-list/offer-list.tsx';
+import { OfferReviewList } from '../../components/offer/offer-review-list/offer-review-list.tsx';
+import Map from '../../components/map/map.tsx';
 import { getCoordinatesOffers } from '../../shared/utils/offer.ts';
 import { NEAR_OFFERS_LIST_LENGTH, OfferCardType } from '../../shared/constants/offer.ts';
 import { RootState, useAppDispatch } from '../../hooks/use-store.ts';
-import { Header } from '../../components/header.tsx';
+import { Header } from '../../components/header/header.tsx';
 import Spinner from '../../components/spinner/spinner.tsx';
 import { AuthStatus } from '../../shared/constants/auth.ts';
 import { fetchCurrentOffer } from '../../store/actions/offer.ts';
