@@ -1,10 +1,10 @@
 import { OfferList } from '../offer/components/offer-list.tsx';
 import { OfferCardType } from '../../shared/constants/offer.ts';
-import {RootState, useAppDispatch} from '../../hooks/use-store.ts';
+import { RootState, useAppDispatch } from '../../hooks/use-store.ts';
 import { Header } from '../../components/header.tsx';
 import { useSelector } from 'react-redux';
 import { useCallback, useMemo } from 'react';
-import {MainOfferInfo, OfferCity} from '../../shared/types/offer.ts';
+import { MainOfferInfo, OfferCity } from '../../shared/types/offer.ts';
 import { setCity } from '../../store/slices/city.ts';
 import { Link } from 'react-router-dom';
 import { RoutePath } from '../../shared/constants/router.ts';

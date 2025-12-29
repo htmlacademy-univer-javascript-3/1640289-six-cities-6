@@ -41,7 +41,7 @@ function Map(props: MapProps): JSX.Element {
     }
   }, [map, markers]);
 
-  return <section className= {classNames('map', props.additionalClass)} ref={mapRef} />;
+  return <section className={classNames('map', props.additionalClass)} ref={mapRef} />;
 }
 
 export default Map;

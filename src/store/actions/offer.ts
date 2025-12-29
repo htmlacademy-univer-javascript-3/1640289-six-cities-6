@@ -1,7 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AdditionalOfferInfo, MainOfferInfo, OfferFeedback } from '../../shared/types/offer.ts';
-import { ApiEndpoint } from '../../shared/utils/api.ts';
 
 import { AppDispatchType, StateType } from '../index.ts';
 import { NavigateFunction } from 'react-router-dom';
@@ -16,6 +15,7 @@ import {
   setCurrentOfferNearbyOffers
 } from '../slices/current-offer.ts';
 import { setFavorites } from '../slices/favorite.ts';
+import { ApiEndpoint } from '../../shared/constants/api.ts';
 
 export const fetchOffers = createAsyncThunk<void, undefined, {
   dispatch: AppDispatchType;

@@ -22,7 +22,7 @@ export const Login: React.FC = () => {
           <section className="locations locations--login locations--current">
             <div className="locations__item">
               <a className="locations__item-link" href="#">
-                <span>{city.name}</span>
+                <span>{city?.name ?? ''}</span>
               </a>
             </div>
           </section>

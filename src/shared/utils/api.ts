@@ -13,11 +13,3 @@ export const removeToken = () => {
   localStorage.removeItem(AUTH_TOKEN_KEY);
 };
 
-export enum ApiEndpoint {
-  Offers = 'offers',
-  Login = 'login',
-  Logout = 'logout',
-  Feedbacks = 'comments',
-  Nearby = 'nearby',
-  Favorites = 'favorite'
-}
